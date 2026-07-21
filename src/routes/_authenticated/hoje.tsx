@@ -22,6 +22,7 @@ import { BookOpen, PlayCircle, CheckCircle2, HelpCircle, Minus, Plus } from "luc
 import { findGuideForTask } from "@/lib/task-guides";
 import { listarAcaoRua, salvarAcaoRua } from "@/lib/acao-rua.functions";
 import { listarMetas, salvarMeta } from "@/lib/metas.functions";
+import { BoasVindas } from "@/components/BoasVindas";
 
 export const Route = createFileRoute("/_authenticated/hoje")({
   ssr: false,
@@ -160,6 +161,7 @@ function HojePage() {
 
   return (
     <div className="flex min-h-screen flex-col bg-muted pb-2">
+      <BoasVindas open={meusQ.data?.profile?.onboarding_ok === false} />
       <AppHeader title="Plano 60 Dias" />
 
       <div className="bg-primary px-4 pb-5 pt-2 text-white">
