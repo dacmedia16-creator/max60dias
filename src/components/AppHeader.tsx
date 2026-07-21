@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "@tanstack/react-router";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { LogOut, CalendarCheck, Users, MessageSquareText, BookOpen, Map } from "lucide-react";
+import { LogOut, HelpCircle, CalendarCheck, Users, MessageSquareText, BookOpen, Map } from "lucide-react";
 
 export function AppHeader({ title, gestor = false }: { title: string; gestor?: boolean }) {
   const navigate = useNavigate();
@@ -23,9 +23,18 @@ export function AppHeader({ title, gestor = false }: { title: string; gestor?: b
         </span>
         <span className="hidden text-sm font-medium opacity-90 sm:inline">· {title}</span>
       </Link>
-      <Button size="sm" variant="ghost" className="text-white hover:bg-white/10 hover:text-white" onClick={sair}>
-        <LogOut className="mr-1 h-4 w-4" /> Sair
-      </Button>
+      <div className="flex items-center gap-1">
+        {!gestor && (
+          <Link to="/ajuda">
+            <Button size="icon" variant="ghost" className="text-white hover:bg-white/10 hover:text-white" title="Ajuda">
+              <HelpCircle className="h-5 w-5" />
+            </Button>
+          </Link>
+        )}
+        <Button size="sm" variant="ghost" className="text-white hover:bg-white/10 hover:text-white" onClick={sair}>
+          <LogOut className="mr-1 h-4 w-4" /> Sair
+        </Button>
+      </div>
     </header>
   );
 }
