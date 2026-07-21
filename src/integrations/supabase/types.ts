@@ -274,6 +274,7 @@ export type Database = {
           email: string
           id: string
           nome: string
+          onboarding_ok: boolean
         }
         Insert: {
           created_at?: string
@@ -281,6 +282,7 @@ export type Database = {
           email?: string
           id: string
           nome?: string
+          onboarding_ok?: boolean
         }
         Update: {
           created_at?: string
@@ -288,6 +290,7 @@ export type Database = {
           email?: string
           id?: string
           nome?: string
+          onboarding_ok?: boolean
         }
         Relationships: []
       }
