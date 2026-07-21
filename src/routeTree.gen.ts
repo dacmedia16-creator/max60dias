@@ -16,6 +16,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedJornadaRouteImport } from './routes/_authenticated/jornada'
 import { Route as AuthenticatedHojeRouteImport } from './routes/_authenticated/hoje'
 import { Route as AuthenticatedGestorRouteImport } from './routes/_authenticated/gestor'
+import { Route as AuthenticatedContatosRouteImport } from './routes/_authenticated/contatos'
 import { Route as AuthenticatedGestorIndexRouteImport } from './routes/_authenticated/gestor.index'
 import { Route as AuthenticatedGestorNovoRouteImport } from './routes/_authenticated/gestor.novo'
 import { Route as AuthenticatedGestorGuiasRouteImport } from './routes/_authenticated/gestor.guias'
@@ -57,6 +58,11 @@ const AuthenticatedGestorRoute = AuthenticatedGestorRouteImport.update({
   path: '/gestor',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedContatosRoute = AuthenticatedContatosRouteImport.update({
+  id: '/contatos',
+  path: '/contatos',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 const AuthenticatedGestorIndexRoute =
   AuthenticatedGestorIndexRouteImport.update({
     id: '/',
@@ -96,6 +102,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/contatos': typeof AuthenticatedContatosRoute
   '/gestor': typeof AuthenticatedGestorRouteWithChildren
   '/hoje': typeof AuthenticatedHojeRoute
   '/jornada': typeof AuthenticatedJornadaRoute
@@ -110,6 +117,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/contatos': typeof AuthenticatedContatosRoute
   '/hoje': typeof AuthenticatedHojeRoute
   '/jornada': typeof AuthenticatedJornadaRoute
   '/dia/$dia': typeof AuthenticatedDiaDiaRoute
@@ -125,6 +133,7 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/auth': typeof AuthRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/_authenticated/contatos': typeof AuthenticatedContatosRoute
   '/_authenticated/gestor': typeof AuthenticatedGestorRouteWithChildren
   '/_authenticated/hoje': typeof AuthenticatedHojeRoute
   '/_authenticated/jornada': typeof AuthenticatedJornadaRoute
@@ -141,6 +150,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/reset-password'
+    | '/contatos'
     | '/gestor'
     | '/hoje'
     | '/jornada'
@@ -155,6 +165,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/reset-password'
+    | '/contatos'
     | '/hoje'
     | '/jornada'
     | '/dia/$dia'
@@ -169,6 +180,7 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/auth'
     | '/reset-password'
+    | '/_authenticated/contatos'
     | '/_authenticated/gestor'
     | '/_authenticated/hoje'
     | '/_authenticated/jornada'
@@ -238,6 +250,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedGestorRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/contatos': {
+      id: '/_authenticated/contatos'
+      path: '/contatos'
+      fullPath: '/contatos'
+      preLoaderRoute: typeof AuthenticatedContatosRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/gestor/': {
       id: '/_authenticated/gestor/'
       path: '/'
@@ -303,6 +322,7 @@ const AuthenticatedGestorRouteWithChildren =
   AuthenticatedGestorRoute._addFileChildren(AuthenticatedGestorRouteChildren)
 
 interface AuthenticatedRouteChildren {
+  AuthenticatedContatosRoute: typeof AuthenticatedContatosRoute
   AuthenticatedGestorRoute: typeof AuthenticatedGestorRouteWithChildren
   AuthenticatedHojeRoute: typeof AuthenticatedHojeRoute
   AuthenticatedJornadaRoute: typeof AuthenticatedJornadaRoute
@@ -310,6 +330,7 @@ interface AuthenticatedRouteChildren {
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
+  AuthenticatedContatosRoute: AuthenticatedContatosRoute,
   AuthenticatedGestorRoute: AuthenticatedGestorRouteWithChildren,
   AuthenticatedHojeRoute: AuthenticatedHojeRoute,
   AuthenticatedJornadaRoute: AuthenticatedJornadaRoute,

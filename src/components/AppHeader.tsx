@@ -32,7 +32,7 @@ export function AppHeader({ title, gestor = false }: { title: string; gestor?: b
 
 export function BottomNav() {
   return (
-    <nav className="sticky bottom-0 z-40 grid grid-cols-2 border-t bg-card">
+    <nav className="sticky bottom-0 z-40 grid grid-cols-3 border-t bg-card">
       <Link
         to="/hoje"
         className="py-3 text-center text-sm font-medium text-muted-foreground"
@@ -41,11 +41,18 @@ export function BottomNav() {
         Hoje
       </Link>
       <Link
+        to="/contatos"
+        className="py-3 text-center text-sm font-medium text-muted-foreground"
+        activeProps={{ className: "py-3 text-center text-sm font-semibold text-primary" }}
+      >
+        Contatos
+      </Link>
+      <Link
         to="/jornada"
         className="py-3 text-center text-sm font-medium text-muted-foreground"
         activeProps={{ className: "py-3 text-center text-sm font-semibold text-primary" }}
       >
-        Minha jornada
+        Jornada
       </Link>
     </nav>
   );

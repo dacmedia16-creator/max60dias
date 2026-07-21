@@ -14,6 +14,53 @@ export type Database = {
   }
   public: {
     Tables: {
+      contatos: {
+        Row: {
+          created_at: string
+          id: string
+          nome: string
+          observacoes: string | null
+          proximo_retorno: string | null
+          status: string
+          telefone: string | null
+          tipo: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          nome: string
+          observacoes?: string | null
+          proximo_retorno?: string | null
+          status?: string
+          telefone?: string | null
+          tipo?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          nome?: string
+          observacoes?: string | null
+          proximo_retorno?: string | null
+          status?: string
+          telefone?: string | null
+          tipo?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "contatos_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       daily_reports: {
         Row: {
           auto_avaliacao: number | null
