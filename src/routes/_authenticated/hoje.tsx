@@ -18,8 +18,9 @@ import { Slider } from "@/components/ui/slider";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { diaAtualDoCorretor } from "@/lib/dias-uteis";
 import { toast } from "sonner";
-import { BookOpen, PlayCircle, CheckCircle2, HelpCircle } from "lucide-react";
+import { BookOpen, PlayCircle, CheckCircle2, HelpCircle, Minus, Plus } from "lucide-react";
 import { findGuideForTask } from "@/lib/task-guides";
+import { listarAcaoRua, salvarAcaoRua } from "@/lib/acao-rua.functions";
 
 export const Route = createFileRoute("/_authenticated/hoje")({
   ssr: false,
@@ -36,6 +37,9 @@ function HojePage() {
 
   const planoQ = useQuery({ queryKey: ["plano"], queryFn: () => getPlano() });
   const meusQ = useQuery({ queryKey: ["meus"], queryFn: () => getMeus() });
+  const acaoFn = useServerFn(listarAcaoRua);
+  const salvarAcao = useServerFn(salvarAcaoRua);
+  const acaoQ = useQuery({ queryKey: ["acao-rua"], queryFn: () => acaoFn() });
 
   useEffect(() => {
     if (meusQ.data?.isGestor && !meusQ.data.isCorretor) navigate({ to: "/gestor" });
@@ -58,6 +62,31 @@ function HojePage() {
     () => (meusQ.data?.reports ?? []).find((r: any) => r.dia === dia),
     [meusQ.data, dia],
   );
+
+  const acaoDoDia = useMemo(
+    () => ((acaoQ.data as any)?.registros ?? []).find((r: any) => r.dia === dia),
+    [acaoQ.data, dia],
+  );
+  const [acao, setAcao] = useState({ cartoes: 0, flyers: 0, blocos: 0, sms: 0 });
+  useEffect(() => {
+    setAcao({
+      cartoes: acaoDoDia?.cartoes ?? 0,
+      flyers: acaoDoDia?.flyers ?? 0,
+      blocos: acaoDoDia?.blocos ?? 0,
+      sms: acaoDoDia?.sms ?? 0,
+    });
+  }, [acaoDoDia?.dia, acaoDoDia?.cartoes, acaoDoDia?.flyers, acaoDoDia?.blocos, acaoDoDia?.sms]);
+
+  const acaoMut = useMutation({
+    mutationFn: (d: any) => salvarAcao({ data: d }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["acao-rua"] }),
+    onError: (e: any) => toast.error(e.message),
+  });
+  function ajustarAcao(campo: "cartoes" | "flyers" | "blocos" | "sms", delta: number) {
+    const novo = { ...acao, [campo]: Math.max(0, acao[campo] + delta) };
+    setAcao(novo);
+    acaoMut.mutate({ dia, ...novo });
+  }
 
   const progressoMap = useMemo(() => {
     const m = new Map<number, boolean>();
@@ -204,6 +233,44 @@ function HojePage() {
               onChange={(e) => setNotas(e.target.value)}
               rows={4}
             />
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardContent className="p-4">
+            <div className="mb-3 font-semibold">Ação de rua de hoje</div>
+            <div className="grid grid-cols-2 gap-3">
+              {([
+                ["cartoes", "Cartões"],
+                ["flyers", "Flyers"],
+                ["blocos", "Blocos"],
+                ["sms", "SMS"],
+              ] as const).map(([campo, label]) => (
+                <div key={campo} className="rounded-md border p-2">
+                  <div className="text-xs text-muted-foreground">{label}</div>
+                  <div className="mt-1 flex items-center justify-between gap-2">
+                    <Button
+                      size="icon"
+                      variant="outline"
+                      className="h-8 w-8"
+                      onClick={() => ajustarAcao(campo, -1)}
+                      disabled={acao[campo] <= 0}
+                    >
+                      <Minus className="h-4 w-4" />
+                    </Button>
+                    <div className="text-xl font-bold tabular-nums">{acao[campo]}</div>
+                    <Button
+                      size="icon"
+                      variant="outline"
+                      className="h-8 w-8"
+                      onClick={() => ajustarAcao(campo, 1)}
+                    >
+                      <Plus className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </div>
+              ))}
+            </div>
           </CardContent>
         </Card>
 

@@ -13,11 +13,14 @@ import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedScriptsRouteImport } from './routes/_authenticated/scripts'
+import { Route as AuthenticatedMetasRouteImport } from './routes/_authenticated/metas'
 import { Route as AuthenticatedJornadaRouteImport } from './routes/_authenticated/jornada'
 import { Route as AuthenticatedHojeRouteImport } from './routes/_authenticated/hoje'
 import { Route as AuthenticatedGestorRouteImport } from './routes/_authenticated/gestor'
 import { Route as AuthenticatedContatosRouteImport } from './routes/_authenticated/contatos'
 import { Route as AuthenticatedGestorIndexRouteImport } from './routes/_authenticated/gestor.index'
+import { Route as AuthenticatedGestorScriptsRouteImport } from './routes/_authenticated/gestor.scripts'
 import { Route as AuthenticatedGestorNovoRouteImport } from './routes/_authenticated/gestor.novo'
 import { Route as AuthenticatedGestorGuiasRouteImport } from './routes/_authenticated/gestor.guias'
 import { Route as AuthenticatedGestorConteudoRouteImport } from './routes/_authenticated/gestor.conteudo'
@@ -43,6 +46,16 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedScriptsRoute = AuthenticatedScriptsRouteImport.update({
+  id: '/scripts',
+  path: '/scripts',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedMetasRoute = AuthenticatedMetasRouteImport.update({
+  id: '/metas',
+  path: '/metas',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 const AuthenticatedJornadaRoute = AuthenticatedJornadaRouteImport.update({
   id: '/jornada',
   path: '/jornada',
@@ -67,6 +80,12 @@ const AuthenticatedGestorIndexRoute =
   AuthenticatedGestorIndexRouteImport.update({
     id: '/',
     path: '/',
+    getParentRoute: () => AuthenticatedGestorRoute,
+  } as any)
+const AuthenticatedGestorScriptsRoute =
+  AuthenticatedGestorScriptsRouteImport.update({
+    id: '/scripts',
+    path: '/scripts',
     getParentRoute: () => AuthenticatedGestorRoute,
   } as any)
 const AuthenticatedGestorNovoRoute = AuthenticatedGestorNovoRouteImport.update({
@@ -106,10 +125,13 @@ export interface FileRoutesByFullPath {
   '/gestor': typeof AuthenticatedGestorRouteWithChildren
   '/hoje': typeof AuthenticatedHojeRoute
   '/jornada': typeof AuthenticatedJornadaRoute
+  '/metas': typeof AuthenticatedMetasRoute
+  '/scripts': typeof AuthenticatedScriptsRoute
   '/dia/$dia': typeof AuthenticatedDiaDiaRoute
   '/gestor/conteudo': typeof AuthenticatedGestorConteudoRoute
   '/gestor/guias': typeof AuthenticatedGestorGuiasRoute
   '/gestor/novo': typeof AuthenticatedGestorNovoRoute
+  '/gestor/scripts': typeof AuthenticatedGestorScriptsRoute
   '/gestor/': typeof AuthenticatedGestorIndexRoute
   '/gestor/corretor/$id': typeof AuthenticatedGestorCorretorIdRoute
 }
@@ -120,10 +142,13 @@ export interface FileRoutesByTo {
   '/contatos': typeof AuthenticatedContatosRoute
   '/hoje': typeof AuthenticatedHojeRoute
   '/jornada': typeof AuthenticatedJornadaRoute
+  '/metas': typeof AuthenticatedMetasRoute
+  '/scripts': typeof AuthenticatedScriptsRoute
   '/dia/$dia': typeof AuthenticatedDiaDiaRoute
   '/gestor/conteudo': typeof AuthenticatedGestorConteudoRoute
   '/gestor/guias': typeof AuthenticatedGestorGuiasRoute
   '/gestor/novo': typeof AuthenticatedGestorNovoRoute
+  '/gestor/scripts': typeof AuthenticatedGestorScriptsRoute
   '/gestor': typeof AuthenticatedGestorIndexRoute
   '/gestor/corretor/$id': typeof AuthenticatedGestorCorretorIdRoute
 }
@@ -137,10 +162,13 @@ export interface FileRoutesById {
   '/_authenticated/gestor': typeof AuthenticatedGestorRouteWithChildren
   '/_authenticated/hoje': typeof AuthenticatedHojeRoute
   '/_authenticated/jornada': typeof AuthenticatedJornadaRoute
+  '/_authenticated/metas': typeof AuthenticatedMetasRoute
+  '/_authenticated/scripts': typeof AuthenticatedScriptsRoute
   '/_authenticated/dia/$dia': typeof AuthenticatedDiaDiaRoute
   '/_authenticated/gestor/conteudo': typeof AuthenticatedGestorConteudoRoute
   '/_authenticated/gestor/guias': typeof AuthenticatedGestorGuiasRoute
   '/_authenticated/gestor/novo': typeof AuthenticatedGestorNovoRoute
+  '/_authenticated/gestor/scripts': typeof AuthenticatedGestorScriptsRoute
   '/_authenticated/gestor/': typeof AuthenticatedGestorIndexRoute
   '/_authenticated/gestor/corretor/$id': typeof AuthenticatedGestorCorretorIdRoute
 }
@@ -154,10 +182,13 @@ export interface FileRouteTypes {
     | '/gestor'
     | '/hoje'
     | '/jornada'
+    | '/metas'
+    | '/scripts'
     | '/dia/$dia'
     | '/gestor/conteudo'
     | '/gestor/guias'
     | '/gestor/novo'
+    | '/gestor/scripts'
     | '/gestor/'
     | '/gestor/corretor/$id'
   fileRoutesByTo: FileRoutesByTo
@@ -168,10 +199,13 @@ export interface FileRouteTypes {
     | '/contatos'
     | '/hoje'
     | '/jornada'
+    | '/metas'
+    | '/scripts'
     | '/dia/$dia'
     | '/gestor/conteudo'
     | '/gestor/guias'
     | '/gestor/novo'
+    | '/gestor/scripts'
     | '/gestor'
     | '/gestor/corretor/$id'
   id:
@@ -184,10 +218,13 @@ export interface FileRouteTypes {
     | '/_authenticated/gestor'
     | '/_authenticated/hoje'
     | '/_authenticated/jornada'
+    | '/_authenticated/metas'
+    | '/_authenticated/scripts'
     | '/_authenticated/dia/$dia'
     | '/_authenticated/gestor/conteudo'
     | '/_authenticated/gestor/guias'
     | '/_authenticated/gestor/novo'
+    | '/_authenticated/gestor/scripts'
     | '/_authenticated/gestor/'
     | '/_authenticated/gestor/corretor/$id'
   fileRoutesById: FileRoutesById
@@ -229,6 +266,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/scripts': {
+      id: '/_authenticated/scripts'
+      path: '/scripts'
+      fullPath: '/scripts'
+      preLoaderRoute: typeof AuthenticatedScriptsRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/metas': {
+      id: '/_authenticated/metas'
+      path: '/metas'
+      fullPath: '/metas'
+      preLoaderRoute: typeof AuthenticatedMetasRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/jornada': {
       id: '/_authenticated/jornada'
       path: '/jornada'
@@ -262,6 +313,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/gestor/'
       preLoaderRoute: typeof AuthenticatedGestorIndexRouteImport
+      parentRoute: typeof AuthenticatedGestorRoute
+    }
+    '/_authenticated/gestor/scripts': {
+      id: '/_authenticated/gestor/scripts'
+      path: '/scripts'
+      fullPath: '/gestor/scripts'
+      preLoaderRoute: typeof AuthenticatedGestorScriptsRouteImport
       parentRoute: typeof AuthenticatedGestorRoute
     }
     '/_authenticated/gestor/novo': {
@@ -306,6 +364,7 @@ interface AuthenticatedGestorRouteChildren {
   AuthenticatedGestorConteudoRoute: typeof AuthenticatedGestorConteudoRoute
   AuthenticatedGestorGuiasRoute: typeof AuthenticatedGestorGuiasRoute
   AuthenticatedGestorNovoRoute: typeof AuthenticatedGestorNovoRoute
+  AuthenticatedGestorScriptsRoute: typeof AuthenticatedGestorScriptsRoute
   AuthenticatedGestorIndexRoute: typeof AuthenticatedGestorIndexRoute
   AuthenticatedGestorCorretorIdRoute: typeof AuthenticatedGestorCorretorIdRoute
 }
@@ -314,6 +373,7 @@ const AuthenticatedGestorRouteChildren: AuthenticatedGestorRouteChildren = {
   AuthenticatedGestorConteudoRoute: AuthenticatedGestorConteudoRoute,
   AuthenticatedGestorGuiasRoute: AuthenticatedGestorGuiasRoute,
   AuthenticatedGestorNovoRoute: AuthenticatedGestorNovoRoute,
+  AuthenticatedGestorScriptsRoute: AuthenticatedGestorScriptsRoute,
   AuthenticatedGestorIndexRoute: AuthenticatedGestorIndexRoute,
   AuthenticatedGestorCorretorIdRoute: AuthenticatedGestorCorretorIdRoute,
 }
@@ -326,6 +386,8 @@ interface AuthenticatedRouteChildren {
   AuthenticatedGestorRoute: typeof AuthenticatedGestorRouteWithChildren
   AuthenticatedHojeRoute: typeof AuthenticatedHojeRoute
   AuthenticatedJornadaRoute: typeof AuthenticatedJornadaRoute
+  AuthenticatedMetasRoute: typeof AuthenticatedMetasRoute
+  AuthenticatedScriptsRoute: typeof AuthenticatedScriptsRoute
   AuthenticatedDiaDiaRoute: typeof AuthenticatedDiaDiaRoute
 }
 
@@ -334,6 +396,8 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedGestorRoute: AuthenticatedGestorRouteWithChildren,
   AuthenticatedHojeRoute: AuthenticatedHojeRoute,
   AuthenticatedJornadaRoute: AuthenticatedJornadaRoute,
+  AuthenticatedMetasRoute: AuthenticatedMetasRoute,
+  AuthenticatedScriptsRoute: AuthenticatedScriptsRoute,
   AuthenticatedDiaDiaRoute: AuthenticatedDiaDiaRoute,
 }
 
