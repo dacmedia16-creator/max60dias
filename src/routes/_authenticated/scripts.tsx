@@ -37,6 +37,9 @@ export const Route = createFileRoute("/_authenticated/scripts")({
 });
 
 const CATEGORIAS = [
+  { v: "reuniao", label: "Reunião" },
+  { v: "comprador", label: "Comprador" },
+  { v: "fechamento", label: "Fechamento" },
   { v: "cip", label: "CIP" },
   { v: "prospeccao", label: "Prospecção" },
   { v: "objecoes", label: "Objeções" },
