@@ -32,28 +32,23 @@ export function AppHeader({ title, gestor = false }: { title: string; gestor?: b
 
 export function BottomNav() {
   return (
-    <nav className="sticky bottom-0 z-40 grid grid-cols-3 border-t bg-card">
-      <Link
-        to="/hoje"
-        className="py-3 text-center text-sm font-medium text-muted-foreground"
-        activeProps={{ className: "py-3 text-center text-sm font-semibold text-primary" }}
-      >
-        Hoje
-      </Link>
-      <Link
-        to="/contatos"
-        className="py-3 text-center text-sm font-medium text-muted-foreground"
-        activeProps={{ className: "py-3 text-center text-sm font-semibold text-primary" }}
-      >
-        Contatos
-      </Link>
-      <Link
-        to="/jornada"
-        className="py-3 text-center text-sm font-medium text-muted-foreground"
-        activeProps={{ className: "py-3 text-center text-sm font-semibold text-primary" }}
-      >
-        Jornada
-      </Link>
+    <nav className="sticky bottom-0 z-40 grid grid-cols-5 border-t bg-card">
+      {[
+        { to: "/hoje", label: "Hoje" },
+        { to: "/contatos", label: "Contatos" },
+        { to: "/scripts", label: "Scripts" },
+        { to: "/metas", label: "Metas" },
+        { to: "/jornada", label: "Jornada" },
+      ].map((it) => (
+        <Link
+          key={it.to}
+          to={it.to}
+          className="py-3 text-center text-xs font-medium text-muted-foreground"
+          activeProps={{ className: "py-3 text-center text-xs font-semibold text-primary" }}
+        >
+          {it.label}
+        </Link>
+      ))}
     </nav>
   );
 }
