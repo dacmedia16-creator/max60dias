@@ -19,6 +19,7 @@ import { Route as AuthenticatedHojeRouteImport } from './routes/_authenticated/h
 import { Route as AuthenticatedGestorRouteImport } from './routes/_authenticated/gestor'
 import { Route as AuthenticatedContatosRouteImport } from './routes/_authenticated/contatos'
 import { Route as AuthenticatedCartilhaRouteImport } from './routes/_authenticated/cartilha'
+import { Route as AuthenticatedAjudaRouteImport } from './routes/_authenticated/ajuda'
 import { Route as AuthenticatedGestorIndexRouteImport } from './routes/_authenticated/gestor.index'
 import { Route as AuthenticatedGestorScriptsRouteImport } from './routes/_authenticated/gestor.scripts'
 import { Route as AuthenticatedGestorNovoRouteImport } from './routes/_authenticated/gestor.novo'
@@ -77,6 +78,11 @@ const AuthenticatedCartilhaRoute = AuthenticatedCartilhaRouteImport.update({
   path: '/cartilha',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedAjudaRoute = AuthenticatedAjudaRouteImport.update({
+  id: '/ajuda',
+  path: '/ajuda',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 const AuthenticatedGestorIndexRoute =
   AuthenticatedGestorIndexRouteImport.update({
     id: '/',
@@ -128,6 +134,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/ajuda': typeof AuthenticatedAjudaRoute
   '/cartilha': typeof AuthenticatedCartilhaRoute
   '/contatos': typeof AuthenticatedContatosRoute
   '/gestor': typeof AuthenticatedGestorRouteWithChildren
@@ -147,6 +154,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/ajuda': typeof AuthenticatedAjudaRoute
   '/cartilha': typeof AuthenticatedCartilhaRoute
   '/contatos': typeof AuthenticatedContatosRoute
   '/hoje': typeof AuthenticatedHojeRoute
@@ -167,6 +175,7 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/auth': typeof AuthRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/_authenticated/ajuda': typeof AuthenticatedAjudaRoute
   '/_authenticated/cartilha': typeof AuthenticatedCartilhaRoute
   '/_authenticated/contatos': typeof AuthenticatedContatosRoute
   '/_authenticated/gestor': typeof AuthenticatedGestorRouteWithChildren
@@ -188,6 +197,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/reset-password'
+    | '/ajuda'
     | '/cartilha'
     | '/contatos'
     | '/gestor'
@@ -207,6 +217,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/reset-password'
+    | '/ajuda'
     | '/cartilha'
     | '/contatos'
     | '/hoje'
@@ -226,6 +237,7 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/auth'
     | '/reset-password'
+    | '/_authenticated/ajuda'
     | '/_authenticated/cartilha'
     | '/_authenticated/contatos'
     | '/_authenticated/gestor'
@@ -321,6 +333,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedCartilhaRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/ajuda': {
+      id: '/_authenticated/ajuda'
+      path: '/ajuda'
+      fullPath: '/ajuda'
+      preLoaderRoute: typeof AuthenticatedAjudaRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/gestor/': {
       id: '/_authenticated/gestor/'
       path: '/'
@@ -404,6 +423,7 @@ const AuthenticatedGestorRouteWithChildren =
   AuthenticatedGestorRoute._addFileChildren(AuthenticatedGestorRouteChildren)
 
 interface AuthenticatedRouteChildren {
+  AuthenticatedAjudaRoute: typeof AuthenticatedAjudaRoute
   AuthenticatedCartilhaRoute: typeof AuthenticatedCartilhaRoute
   AuthenticatedContatosRoute: typeof AuthenticatedContatosRoute
   AuthenticatedGestorRoute: typeof AuthenticatedGestorRouteWithChildren
@@ -414,6 +434,7 @@ interface AuthenticatedRouteChildren {
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
+  AuthenticatedAjudaRoute: AuthenticatedAjudaRoute,
   AuthenticatedCartilhaRoute: AuthenticatedCartilhaRoute,
   AuthenticatedContatosRoute: AuthenticatedContatosRoute,
   AuthenticatedGestorRoute: AuthenticatedGestorRouteWithChildren,
