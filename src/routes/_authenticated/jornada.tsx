@@ -28,8 +28,8 @@ function JornadaPage() {
       (meusQ.data?.progress ?? []).map((p: any) => [p.task_id, p.concluida]),
     );
     const bySem = new Map<number, { titulo: string; frase: string | null; dias: number[] }>();
-    dias.forEach((d: any) => {
-      const s = bySem.get(d.semana) ?? { titulo: d.semana_titulo, frase: d.semana_frase, dias: [] };
+    (dias as any[]).forEach((d) => {
+      const s = bySem.get(d.semana) ?? { titulo: d.semana_titulo, frase: d.semana_frase, dias: [] as number[] };
       s.dias.push(d.dia);
       bySem.set(d.semana, s);
     });
