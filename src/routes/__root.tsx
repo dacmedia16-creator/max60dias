@@ -77,14 +77,21 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "Plano 60 Dias — RE/MAX Única Escolha" },
+      {
+        name: "description",
+        content:
+          "Acompanhamento diário dos primeiros 35 dias úteis dos corretores da RE/MAX Única Escolha.",
+      },
+      { name: "author", content: "RE/MAX Única Escolha" },
+      { property: "og:title", content: "Plano 60 Dias — RE/MAX Única Escolha" },
+      {
+        property: "og:description",
+        content:
+          "Jornada guiada para corretores nos primeiros 35 dias úteis, com painel de acompanhamento.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:site", content: "@Lovable" },
     ],
     links: [
       {
