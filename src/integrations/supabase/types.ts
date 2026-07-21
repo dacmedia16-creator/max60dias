@@ -55,6 +55,27 @@ export type Database = {
           },
         ]
       }
+      cartilha_secoes: {
+        Row: {
+          conteudo: string
+          id: number
+          ordem: number
+          titulo: string
+        }
+        Insert: {
+          conteudo: string
+          id?: number
+          ordem?: number
+          titulo: string
+        }
+        Update: {
+          conteudo?: string
+          id?: number
+          ordem?: number
+          titulo?: string
+        }
+        Relationships: []
+      }
       contatos: {
         Row: {
           created_at: string
