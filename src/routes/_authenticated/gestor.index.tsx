@@ -33,7 +33,7 @@ function GestorHome() {
     });
   }, [q.data]);
 
-  const emRisco = rows.filter((r) => r.status === "vermelho").length;
+  const emRisco = rows.filter((r: any) => r.status === "vermelho").length;
   const pctTime = rows.length
     ? Math.round(rows.reduce((s: number, r: any) => s + r.pctMedio, 0) / rows.length)
     : 0;

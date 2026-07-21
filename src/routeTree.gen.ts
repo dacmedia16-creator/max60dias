@@ -15,6 +15,12 @@ import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedJornadaRouteImport } from './routes/_authenticated/jornada'
 import { Route as AuthenticatedHojeRouteImport } from './routes/_authenticated/hoje'
+import { Route as AuthenticatedGestorRouteImport } from './routes/_authenticated/gestor'
+import { Route as AuthenticatedGestorIndexRouteImport } from './routes/_authenticated/gestor.index'
+import { Route as AuthenticatedGestorNovoRouteImport } from './routes/_authenticated/gestor.novo'
+import { Route as AuthenticatedGestorConteudoRouteImport } from './routes/_authenticated/gestor.conteudo'
+import { Route as AuthenticatedDiaDiaRouteImport } from './routes/_authenticated/dia.$dia'
+import { Route as AuthenticatedGestorCorretorIdRouteImport } from './routes/_authenticated/gestor.corretor.$id'
 
 const ResetPasswordRoute = ResetPasswordRouteImport.update({
   id: '/reset-password',
@@ -45,13 +51,52 @@ const AuthenticatedHojeRoute = AuthenticatedHojeRouteImport.update({
   path: '/hoje',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedGestorRoute = AuthenticatedGestorRouteImport.update({
+  id: '/gestor',
+  path: '/gestor',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedGestorIndexRoute =
+  AuthenticatedGestorIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedGestorRoute,
+  } as any)
+const AuthenticatedGestorNovoRoute = AuthenticatedGestorNovoRouteImport.update({
+  id: '/novo',
+  path: '/novo',
+  getParentRoute: () => AuthenticatedGestorRoute,
+} as any)
+const AuthenticatedGestorConteudoRoute =
+  AuthenticatedGestorConteudoRouteImport.update({
+    id: '/conteudo',
+    path: '/conteudo',
+    getParentRoute: () => AuthenticatedGestorRoute,
+  } as any)
+const AuthenticatedDiaDiaRoute = AuthenticatedDiaDiaRouteImport.update({
+  id: '/dia/$dia',
+  path: '/dia/$dia',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedGestorCorretorIdRoute =
+  AuthenticatedGestorCorretorIdRouteImport.update({
+    id: '/corretor/$id',
+    path: '/corretor/$id',
+    getParentRoute: () => AuthenticatedGestorRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/gestor': typeof AuthenticatedGestorRouteWithChildren
   '/hoje': typeof AuthenticatedHojeRoute
   '/jornada': typeof AuthenticatedJornadaRoute
+  '/dia/$dia': typeof AuthenticatedDiaDiaRoute
+  '/gestor/conteudo': typeof AuthenticatedGestorConteudoRoute
+  '/gestor/novo': typeof AuthenticatedGestorNovoRoute
+  '/gestor/': typeof AuthenticatedGestorIndexRoute
+  '/gestor/corretor/$id': typeof AuthenticatedGestorCorretorIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -59,6 +104,11 @@ export interface FileRoutesByTo {
   '/reset-password': typeof ResetPasswordRoute
   '/hoje': typeof AuthenticatedHojeRoute
   '/jornada': typeof AuthenticatedJornadaRoute
+  '/dia/$dia': typeof AuthenticatedDiaDiaRoute
+  '/gestor/conteudo': typeof AuthenticatedGestorConteudoRoute
+  '/gestor/novo': typeof AuthenticatedGestorNovoRoute
+  '/gestor': typeof AuthenticatedGestorIndexRoute
+  '/gestor/corretor/$id': typeof AuthenticatedGestorCorretorIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -66,22 +116,55 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/auth': typeof AuthRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/_authenticated/gestor': typeof AuthenticatedGestorRouteWithChildren
   '/_authenticated/hoje': typeof AuthenticatedHojeRoute
   '/_authenticated/jornada': typeof AuthenticatedJornadaRoute
+  '/_authenticated/dia/$dia': typeof AuthenticatedDiaDiaRoute
+  '/_authenticated/gestor/conteudo': typeof AuthenticatedGestorConteudoRoute
+  '/_authenticated/gestor/novo': typeof AuthenticatedGestorNovoRoute
+  '/_authenticated/gestor/': typeof AuthenticatedGestorIndexRoute
+  '/_authenticated/gestor/corretor/$id': typeof AuthenticatedGestorCorretorIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/reset-password' | '/hoje' | '/jornada'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/reset-password'
+    | '/gestor'
+    | '/hoje'
+    | '/jornada'
+    | '/dia/$dia'
+    | '/gestor/conteudo'
+    | '/gestor/novo'
+    | '/gestor/'
+    | '/gestor/corretor/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/reset-password' | '/hoje' | '/jornada'
+  to:
+    | '/'
+    | '/auth'
+    | '/reset-password'
+    | '/hoje'
+    | '/jornada'
+    | '/dia/$dia'
+    | '/gestor/conteudo'
+    | '/gestor/novo'
+    | '/gestor'
+    | '/gestor/corretor/$id'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
     | '/auth'
     | '/reset-password'
+    | '/_authenticated/gestor'
     | '/_authenticated/hoje'
     | '/_authenticated/jornada'
+    | '/_authenticated/dia/$dia'
+    | '/_authenticated/gestor/conteudo'
+    | '/_authenticated/gestor/novo'
+    | '/_authenticated/gestor/'
+    | '/_authenticated/gestor/corretor/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -135,17 +218,80 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedHojeRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/gestor': {
+      id: '/_authenticated/gestor'
+      path: '/gestor'
+      fullPath: '/gestor'
+      preLoaderRoute: typeof AuthenticatedGestorRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/gestor/': {
+      id: '/_authenticated/gestor/'
+      path: '/'
+      fullPath: '/gestor/'
+      preLoaderRoute: typeof AuthenticatedGestorIndexRouteImport
+      parentRoute: typeof AuthenticatedGestorRoute
+    }
+    '/_authenticated/gestor/novo': {
+      id: '/_authenticated/gestor/novo'
+      path: '/novo'
+      fullPath: '/gestor/novo'
+      preLoaderRoute: typeof AuthenticatedGestorNovoRouteImport
+      parentRoute: typeof AuthenticatedGestorRoute
+    }
+    '/_authenticated/gestor/conteudo': {
+      id: '/_authenticated/gestor/conteudo'
+      path: '/conteudo'
+      fullPath: '/gestor/conteudo'
+      preLoaderRoute: typeof AuthenticatedGestorConteudoRouteImport
+      parentRoute: typeof AuthenticatedGestorRoute
+    }
+    '/_authenticated/dia/$dia': {
+      id: '/_authenticated/dia/$dia'
+      path: '/dia/$dia'
+      fullPath: '/dia/$dia'
+      preLoaderRoute: typeof AuthenticatedDiaDiaRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/gestor/corretor/$id': {
+      id: '/_authenticated/gestor/corretor/$id'
+      path: '/corretor/$id'
+      fullPath: '/gestor/corretor/$id'
+      preLoaderRoute: typeof AuthenticatedGestorCorretorIdRouteImport
+      parentRoute: typeof AuthenticatedGestorRoute
+    }
   }
 }
 
+interface AuthenticatedGestorRouteChildren {
+  AuthenticatedGestorConteudoRoute: typeof AuthenticatedGestorConteudoRoute
+  AuthenticatedGestorNovoRoute: typeof AuthenticatedGestorNovoRoute
+  AuthenticatedGestorIndexRoute: typeof AuthenticatedGestorIndexRoute
+  AuthenticatedGestorCorretorIdRoute: typeof AuthenticatedGestorCorretorIdRoute
+}
+
+const AuthenticatedGestorRouteChildren: AuthenticatedGestorRouteChildren = {
+  AuthenticatedGestorConteudoRoute: AuthenticatedGestorConteudoRoute,
+  AuthenticatedGestorNovoRoute: AuthenticatedGestorNovoRoute,
+  AuthenticatedGestorIndexRoute: AuthenticatedGestorIndexRoute,
+  AuthenticatedGestorCorretorIdRoute: AuthenticatedGestorCorretorIdRoute,
+}
+
+const AuthenticatedGestorRouteWithChildren =
+  AuthenticatedGestorRoute._addFileChildren(AuthenticatedGestorRouteChildren)
+
 interface AuthenticatedRouteChildren {
+  AuthenticatedGestorRoute: typeof AuthenticatedGestorRouteWithChildren
   AuthenticatedHojeRoute: typeof AuthenticatedHojeRoute
   AuthenticatedJornadaRoute: typeof AuthenticatedJornadaRoute
+  AuthenticatedDiaDiaRoute: typeof AuthenticatedDiaDiaRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
+  AuthenticatedGestorRoute: AuthenticatedGestorRouteWithChildren,
   AuthenticatedHojeRoute: AuthenticatedHojeRoute,
   AuthenticatedJornadaRoute: AuthenticatedJornadaRoute,
+  AuthenticatedDiaDiaRoute: AuthenticatedDiaDiaRoute,
 }
 
 const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
