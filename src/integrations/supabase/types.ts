@@ -144,6 +144,30 @@ export type Database = {
         }
         Relationships: []
       }
+      task_guides: {
+        Row: {
+          guia: string
+          id: number
+          ordem: number
+          padrao: string
+          rotulo: string
+        }
+        Insert: {
+          guia: string
+          id?: number
+          ordem?: number
+          padrao: string
+          rotulo: string
+        }
+        Update: {
+          guia?: string
+          id?: number
+          ordem?: number
+          padrao?: string
+          rotulo?: string
+        }
+        Relationships: []
+      }
       task_progress: {
         Row: {
           concluida: boolean
