@@ -14,6 +14,7 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedScriptsRouteImport } from './routes/_authenticated/scripts'
+import { Route as AuthenticatedMetasRouteImport } from './routes/_authenticated/metas'
 import { Route as AuthenticatedJornadaRouteImport } from './routes/_authenticated/jornada'
 import { Route as AuthenticatedHojeRouteImport } from './routes/_authenticated/hoje'
 import { Route as AuthenticatedGestorRouteImport } from './routes/_authenticated/gestor'
@@ -47,6 +48,11 @@ const IndexRoute = IndexRouteImport.update({
 const AuthenticatedScriptsRoute = AuthenticatedScriptsRouteImport.update({
   id: '/scripts',
   path: '/scripts',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedMetasRoute = AuthenticatedMetasRouteImport.update({
+  id: '/metas',
+  path: '/metas',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
 const AuthenticatedJornadaRoute = AuthenticatedJornadaRouteImport.update({
@@ -112,6 +118,7 @@ export interface FileRoutesByFullPath {
   '/gestor': typeof AuthenticatedGestorRouteWithChildren
   '/hoje': typeof AuthenticatedHojeRoute
   '/jornada': typeof AuthenticatedJornadaRoute
+  '/metas': typeof AuthenticatedMetasRoute
   '/scripts': typeof AuthenticatedScriptsRoute
   '/dia/$dia': typeof AuthenticatedDiaDiaRoute
   '/gestor/conteudo': typeof AuthenticatedGestorConteudoRoute
@@ -127,6 +134,7 @@ export interface FileRoutesByTo {
   '/contatos': typeof AuthenticatedContatosRoute
   '/hoje': typeof AuthenticatedHojeRoute
   '/jornada': typeof AuthenticatedJornadaRoute
+  '/metas': typeof AuthenticatedMetasRoute
   '/scripts': typeof AuthenticatedScriptsRoute
   '/dia/$dia': typeof AuthenticatedDiaDiaRoute
   '/gestor/conteudo': typeof AuthenticatedGestorConteudoRoute
@@ -145,6 +153,7 @@ export interface FileRoutesById {
   '/_authenticated/gestor': typeof AuthenticatedGestorRouteWithChildren
   '/_authenticated/hoje': typeof AuthenticatedHojeRoute
   '/_authenticated/jornada': typeof AuthenticatedJornadaRoute
+  '/_authenticated/metas': typeof AuthenticatedMetasRoute
   '/_authenticated/scripts': typeof AuthenticatedScriptsRoute
   '/_authenticated/dia/$dia': typeof AuthenticatedDiaDiaRoute
   '/_authenticated/gestor/conteudo': typeof AuthenticatedGestorConteudoRoute
@@ -163,6 +172,7 @@ export interface FileRouteTypes {
     | '/gestor'
     | '/hoje'
     | '/jornada'
+    | '/metas'
     | '/scripts'
     | '/dia/$dia'
     | '/gestor/conteudo'
@@ -178,6 +188,7 @@ export interface FileRouteTypes {
     | '/contatos'
     | '/hoje'
     | '/jornada'
+    | '/metas'
     | '/scripts'
     | '/dia/$dia'
     | '/gestor/conteudo'
@@ -195,6 +206,7 @@ export interface FileRouteTypes {
     | '/_authenticated/gestor'
     | '/_authenticated/hoje'
     | '/_authenticated/jornada'
+    | '/_authenticated/metas'
     | '/_authenticated/scripts'
     | '/_authenticated/dia/$dia'
     | '/_authenticated/gestor/conteudo'
@@ -246,6 +258,13 @@ declare module '@tanstack/react-router' {
       path: '/scripts'
       fullPath: '/scripts'
       preLoaderRoute: typeof AuthenticatedScriptsRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/metas': {
+      id: '/_authenticated/metas'
+      path: '/metas'
+      fullPath: '/metas'
+      preLoaderRoute: typeof AuthenticatedMetasRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/jornada': {
@@ -345,6 +364,7 @@ interface AuthenticatedRouteChildren {
   AuthenticatedGestorRoute: typeof AuthenticatedGestorRouteWithChildren
   AuthenticatedHojeRoute: typeof AuthenticatedHojeRoute
   AuthenticatedJornadaRoute: typeof AuthenticatedJornadaRoute
+  AuthenticatedMetasRoute: typeof AuthenticatedMetasRoute
   AuthenticatedScriptsRoute: typeof AuthenticatedScriptsRoute
   AuthenticatedDiaDiaRoute: typeof AuthenticatedDiaDiaRoute
 }
@@ -354,6 +374,7 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedGestorRoute: AuthenticatedGestorRouteWithChildren,
   AuthenticatedHojeRoute: AuthenticatedHojeRoute,
   AuthenticatedJornadaRoute: AuthenticatedJornadaRoute,
+  AuthenticatedMetasRoute: AuthenticatedMetasRoute,
   AuthenticatedScriptsRoute: AuthenticatedScriptsRoute,
   AuthenticatedDiaDiaRoute: AuthenticatedDiaDiaRoute,
 }

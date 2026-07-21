@@ -4,6 +4,9 @@ import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { detalheCorretor, getPlanoCompleto } from "@/lib/plano.functions";
 import { contatosDoCorretor } from "@/lib/contatos.functions";
+import { scriptsDoCorretor } from "@/lib/scripts.functions";
+import { metasDoCorretor } from "@/lib/metas.functions";
+import { acaoRuaDoCorretor } from "@/lib/acao-rua.functions";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { diaAtualDoCorretor } from "@/lib/dias-uteis";
@@ -19,13 +22,31 @@ function Detalhe() {
   const det = useServerFn(detalheCorretor);
   const plano = useServerFn(getPlanoCompleto);
   const contatosFn = useServerFn(contatosDoCorretor);
+  const scriptsFn = useServerFn(scriptsDoCorretor);
+  const metasFn = useServerFn(metasDoCorretor);
+  const acaoFn = useServerFn(acaoRuaDoCorretor);
   const detQ = useQuery({ queryKey: ["gestor-det", id], queryFn: () => det({ data: { userId: id } }) });
   const planoQ = useQuery({ queryKey: ["plano"], queryFn: () => plano() });
   const contatosQ = useQuery({
     queryKey: ["gestor-contatos", id],
     queryFn: () => contatosFn({ data: { userId: id } }),
   });
+  const scriptsQ = useQuery({
+    queryKey: ["gestor-scripts", id],
+    queryFn: () => scriptsFn({ data: { userId: id } }),
+  });
+  const metasQ = useQuery({
+    queryKey: ["gestor-metas", id],
+    queryFn: () => metasFn({ data: { userId: id } }),
+  });
+  const acaoQ = useQuery({
+    queryKey: ["gestor-acao", id],
+    queryFn: () => acaoFn({ data: { userId: id } }),
+  });
   const contatos = (contatosQ.data as any)?.contatos ?? [];
+  const scripts = (scriptsQ.data as any)?.scripts ?? [];
+  const metas = (metasQ.data as any)?.metas ?? [];
+  const acao = (acaoQ.data as any)?.registros ?? [];
 
   const dias = (planoQ.data as any)?.dias ?? [];
   const tarefas = (planoQ.data as any)?.tarefas ?? [];
@@ -74,6 +95,88 @@ function Detalhe() {
                 </div>
               ))}
             </div>
+          )}
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardContent className="p-4">
+          <div className="mb-2 font-semibold">Scripts do corretor</div>
+          {scripts.length === 0 ? (
+            <div className="text-sm text-muted-foreground">Nenhum script próprio.</div>
+          ) : (
+            <div className="space-y-2">
+              {scripts.map((s: any) => (
+                <div key={s.id} className="rounded-md border p-2 text-sm">
+                  <div className="flex items-center justify-between gap-2">
+                    <div className="font-medium">{s.titulo}</div>
+                    <Badge variant="outline" className="shrink-0">{s.categoria}</Badge>
+                  </div>
+                  <p className="mt-1 whitespace-pre-line text-xs text-muted-foreground">
+                    {s.conteudo}
+                  </p>
+                </div>
+              ))}
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardContent className="p-4">
+          <div className="mb-2 font-semibold">Metas & reflexões</div>
+          {metas.length === 0 ? (
+            <div className="text-sm text-muted-foreground">Nenhuma meta registrada.</div>
+          ) : (
+            <div className="space-y-2">
+              {metas.map((m: any) => (
+                <div key={m.id} className="rounded-md border p-2 text-sm">
+                  <div className="font-medium">Semana {m.semana}</div>
+                  {m.objetivo && <div className="mt-1"><span className="text-xs text-muted-foreground">Objetivo: </span>{m.objetivo}</div>}
+                  {m.reflexao && <div className="mt-1"><span className="text-xs text-muted-foreground">Reflexão: </span>{m.reflexao}</div>}
+                  {m.resultado && <div className="mt-1"><span className="text-xs text-muted-foreground">Resultado: </span>{m.resultado}</div>}
+                </div>
+              ))}
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardContent className="p-4">
+          <div className="mb-2 font-semibold">Ação de rua</div>
+          {acao.length === 0 ? (
+            <div className="text-sm text-muted-foreground">Sem registros.</div>
+          ) : (
+            <table className="w-full text-sm">
+              <thead className="text-xs text-muted-foreground">
+                <tr>
+                  <th className="py-1 text-left">Dia</th>
+                  <th className="py-1 text-right">Cartões</th>
+                  <th className="py-1 text-right">Flyers</th>
+                  <th className="py-1 text-right">Blocos</th>
+                  <th className="py-1 text-right">SMS</th>
+                </tr>
+              </thead>
+              <tbody>
+                {acao.map((r: any) => (
+                  <tr key={r.id} className="border-t">
+                    <td className="py-1">Dia {r.dia}</td>
+                    <td className="py-1 text-right tabular-nums">{r.cartoes}</td>
+                    <td className="py-1 text-right tabular-nums">{r.flyers}</td>
+                    <td className="py-1 text-right tabular-nums">{r.blocos}</td>
+                    <td className="py-1 text-right tabular-nums">{r.sms}</td>
+                  </tr>
+                ))}
+                <tr className="border-t font-semibold">
+                  <td className="py-1">Total</td>
+                  <td className="py-1 text-right tabular-nums">{acao.reduce((s: number, r: any) => s + r.cartoes, 0)}</td>
+                  <td className="py-1 text-right tabular-nums">{acao.reduce((s: number, r: any) => s + r.flyers, 0)}</td>
+                  <td className="py-1 text-right tabular-nums">{acao.reduce((s: number, r: any) => s + r.blocos, 0)}</td>
+                  <td className="py-1 text-right tabular-nums">{acao.reduce((s: number, r: any) => s + r.sms, 0)}</td>
+                </tr>
+              </tbody>
+            </table>
           )}
         </CardContent>
       </Card>

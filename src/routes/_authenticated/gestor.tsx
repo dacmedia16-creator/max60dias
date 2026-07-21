@@ -41,6 +41,13 @@ function GestorLayout() {
           >
             Guias das tarefas
           </Link>
+          <Link
+            to="/gestor/scripts"
+            className="text-muted-foreground hover:text-foreground"
+            activeProps={{ className: "font-semibold text-secondary" }}
+          >
+            Scripts modelo
+          </Link>
         </div>
       </nav>
       <div className="mx-auto max-w-6xl p-4">
