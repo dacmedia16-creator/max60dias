@@ -6,11 +6,12 @@ import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 export const getPlanoCompleto = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
-    const [{ data: dias }, { data: tarefas }] = await Promise.all([
+    const [{ data: dias }, { data: tarefas }, { data: guides }] = await Promise.all([
       context.supabase.from("plan_days").select("*").order("dia"),
       context.supabase.from("plan_tasks").select("*").order("dia").order("ordem"),
+      context.supabase.from("task_guides").select("*").order("ordem"),
     ]);
-    return { dias: dias ?? [], tarefas: tarefas ?? [] };
+    return { dias: dias ?? [], tarefas: tarefas ?? [], guides: guides ?? [] };
   });
 
 // Retorna dados do próprio corretor: profile + progresso + relatórios
@@ -171,6 +172,26 @@ export const atualizarVideoDia = createServerFn({ method: "POST" })
       .from("plan_days")
       .update({ video_url: data.videoUrl || null })
       .eq("dia", data.dia);
+    if (error) throw new Error(error.message);
+    return { ok: true };
+  });
+
+export const atualizarGuia = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d) =>
+    z
+      .object({
+        id: z.number(),
+        rotulo: z.string().min(1),
+        guia: z.string().min(1),
+      })
+      .parse(d),
+  )
+  .handler(async ({ data, context }) => {
+    const { error } = await context.supabase
+      .from("task_guides")
+      .update({ rotulo: data.rotulo, guia: data.guia })
+      .eq("id", data.id);
     if (error) throw new Error(error.message);
     return { ok: true };
   });
