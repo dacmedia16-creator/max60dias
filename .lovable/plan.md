@@ -1,39 +1,23 @@
-## Objetivo
+## Base de Contatos (substitui o Excel)
 
-Adicionar guias "como fazer" por tarefa: o corretor toca em uma tarefa e vê um passo a passo; o gestor pode editar cada guia.
+Aplicar o patch enviado para adicionar uma tela "Contatos" no app, com CRUD para o corretor e visão de leitura para o gestor.
 
-## 1. Migração de banco
+### 1. Banco de dados
+Rodar a migration `contatos.sql`: cria `public.contatos` (nome, telefone, tipo, status do funil, observações, próximo retorno), índices em `user_id` e `proximo_retorno`, GRANTs para `authenticated`/`service_role`, RLS habilitado e políticas:
+- SELECT: dono OU gestor
+- INSERT/UPDATE/DELETE: apenas o dono
 
-Aplicar o SQL enviado como migração única:
-- Cria `public.task_guides` (id, `padrao` UNIQUE, `ordem`, `rotulo`, `guia`).
-- GRANTs: SELECT+UPDATE a `authenticated`, ALL a `service_role`.
-- RLS ligado. Política SELECT para qualquer autenticado. Política UPDATE só para gestor via `has_role(auth.uid(), 'gestor')`.
-- `DELETE` + `INSERT` dos ~70 padrões enviados. `ordem` menor = padrão mais específico testado antes (`briefing 9:30` antes de `briefing`; `_estudo` como fallback dos capítulos).
+### 2. Server functions
+Criar `src/lib/contatos.functions.ts` com as funções do patch (listar/criar/editar/apagar do próprio corretor + `contatosDoCorretor` para o gestor).
 
-## 2. Casamento tarefa → guia
+### 3. Rota do corretor
+Criar `src/routes/_authenticated/contatos.tsx` (rota `/contatos`) — cadastro rápido no topo (nome, telefone, tipo) e lista com edição de status, observações e próximo retorno.
 
-Util no cliente `src/lib/task-guides.ts`: dada a descrição da tarefa, itera os guias por `ordem` crescente e retorna o primeiro cujo `padrao` esteja contido em `lower(descricao)`. Para tarefas do tipo "Ler capítulo…" ou "Estudar…", tenta o padrão especial `_estudo`. Se nada casar, retorna `null`.
+### 4. Navegação
+Substituir `src/components/AppHeader.tsx` pela versão do patch — `BottomNav` passa a ter 3 abas: **Hoje · Contatos · Jornada**.
 
-## 3. Server functions (`src/lib/plano.functions.ts`)
+### 5. Painel do gestor
+Em `src/routes/_authenticated/gestor.corretor.$id.tsx`, aplicar o snippet: adicionar imports (`contatosDoCorretor`, `Badge`), query `gestor-contatos`, e novo `<Card>` "Contatos cadastrados" logo abaixo do card de nome/dia atual (somente leitura para o gestor).
 
-- Adicionar guias ao retorno de `getPlanoCompleto` (`context.supabase.from("task_guides").select("*").order("ordem")`) — evita round-trip extra na tela do dia.
-- `atualizarGuia({ id, rotulo, guia })` com Zod, usando `context.supabase` (RLS já restringe a gestor).
-
-## 4. UI do corretor (`_authenticated/hoje.tsx` e `dia.$dia.tsx`)
-
-Ao lado de cada tarefa da checklist, botão discreto "Como fazer" (ícone `HelpCircle`) que abre um `Sheet` mobile-first mostrando `rotulo` + `guia` com `whitespace-pre-line`. Se não houver guia casado, o botão não aparece.
-
-## 5. UI do gestor — nova aba "Guias"
-
-- Adicionar link "Guias" na nav de `_authenticated/gestor.tsx`.
-- Nova rota `src/routes/_authenticated/gestor.guias.tsx`: lista ordenada por `ordem` com editor inline (input para `rotulo`, textarea grande para `guia`) e botão salvar por linha chamando `atualizarGuia`. Toast de sucesso/erro.
-
-## 6. Observações
-
-- Nada muda em `plan_tasks` / `task_progress`; casamento é só de exibição.
-- Nenhum ajuste de auth/roles necessário.
-- O ZIP anexado não é usado — o conteúdo dos guias vem do próprio SQL.
-
-## Entregáveis
-
-1 migração + 1 util novo + 1 server function nova + ajuste em `getPlanoCompleto` + botão de guia em 2 telas do corretor + 1 nova tela do gestor + 1 link de navegação.
+### Fora do escopo (deixar para depois, conforme o próprio README)
+Ligar tarefa "Contactar 10 CIPs" ao contador, botões de ligar/WhatsApp, painel "retornar hoje", importação de Excel.
