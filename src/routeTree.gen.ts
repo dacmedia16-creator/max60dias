@@ -20,6 +20,7 @@ import { Route as AuthenticatedHojeRouteImport } from './routes/_authenticated/h
 import { Route as AuthenticatedGestorRouteImport } from './routes/_authenticated/gestor'
 import { Route as AuthenticatedContatosRouteImport } from './routes/_authenticated/contatos'
 import { Route as AuthenticatedGestorIndexRouteImport } from './routes/_authenticated/gestor.index'
+import { Route as AuthenticatedGestorScriptsRouteImport } from './routes/_authenticated/gestor.scripts'
 import { Route as AuthenticatedGestorNovoRouteImport } from './routes/_authenticated/gestor.novo'
 import { Route as AuthenticatedGestorGuiasRouteImport } from './routes/_authenticated/gestor.guias'
 import { Route as AuthenticatedGestorConteudoRouteImport } from './routes/_authenticated/gestor.conteudo'
@@ -81,6 +82,12 @@ const AuthenticatedGestorIndexRoute =
     path: '/',
     getParentRoute: () => AuthenticatedGestorRoute,
   } as any)
+const AuthenticatedGestorScriptsRoute =
+  AuthenticatedGestorScriptsRouteImport.update({
+    id: '/scripts',
+    path: '/scripts',
+    getParentRoute: () => AuthenticatedGestorRoute,
+  } as any)
 const AuthenticatedGestorNovoRoute = AuthenticatedGestorNovoRouteImport.update({
   id: '/novo',
   path: '/novo',
@@ -124,6 +131,7 @@ export interface FileRoutesByFullPath {
   '/gestor/conteudo': typeof AuthenticatedGestorConteudoRoute
   '/gestor/guias': typeof AuthenticatedGestorGuiasRoute
   '/gestor/novo': typeof AuthenticatedGestorNovoRoute
+  '/gestor/scripts': typeof AuthenticatedGestorScriptsRoute
   '/gestor/': typeof AuthenticatedGestorIndexRoute
   '/gestor/corretor/$id': typeof AuthenticatedGestorCorretorIdRoute
 }
@@ -140,6 +148,7 @@ export interface FileRoutesByTo {
   '/gestor/conteudo': typeof AuthenticatedGestorConteudoRoute
   '/gestor/guias': typeof AuthenticatedGestorGuiasRoute
   '/gestor/novo': typeof AuthenticatedGestorNovoRoute
+  '/gestor/scripts': typeof AuthenticatedGestorScriptsRoute
   '/gestor': typeof AuthenticatedGestorIndexRoute
   '/gestor/corretor/$id': typeof AuthenticatedGestorCorretorIdRoute
 }
@@ -159,6 +168,7 @@ export interface FileRoutesById {
   '/_authenticated/gestor/conteudo': typeof AuthenticatedGestorConteudoRoute
   '/_authenticated/gestor/guias': typeof AuthenticatedGestorGuiasRoute
   '/_authenticated/gestor/novo': typeof AuthenticatedGestorNovoRoute
+  '/_authenticated/gestor/scripts': typeof AuthenticatedGestorScriptsRoute
   '/_authenticated/gestor/': typeof AuthenticatedGestorIndexRoute
   '/_authenticated/gestor/corretor/$id': typeof AuthenticatedGestorCorretorIdRoute
 }
@@ -178,6 +188,7 @@ export interface FileRouteTypes {
     | '/gestor/conteudo'
     | '/gestor/guias'
     | '/gestor/novo'
+    | '/gestor/scripts'
     | '/gestor/'
     | '/gestor/corretor/$id'
   fileRoutesByTo: FileRoutesByTo
@@ -194,6 +205,7 @@ export interface FileRouteTypes {
     | '/gestor/conteudo'
     | '/gestor/guias'
     | '/gestor/novo'
+    | '/gestor/scripts'
     | '/gestor'
     | '/gestor/corretor/$id'
   id:
@@ -212,6 +224,7 @@ export interface FileRouteTypes {
     | '/_authenticated/gestor/conteudo'
     | '/_authenticated/gestor/guias'
     | '/_authenticated/gestor/novo'
+    | '/_authenticated/gestor/scripts'
     | '/_authenticated/gestor/'
     | '/_authenticated/gestor/corretor/$id'
   fileRoutesById: FileRoutesById
@@ -302,6 +315,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedGestorIndexRouteImport
       parentRoute: typeof AuthenticatedGestorRoute
     }
+    '/_authenticated/gestor/scripts': {
+      id: '/_authenticated/gestor/scripts'
+      path: '/scripts'
+      fullPath: '/gestor/scripts'
+      preLoaderRoute: typeof AuthenticatedGestorScriptsRouteImport
+      parentRoute: typeof AuthenticatedGestorRoute
+    }
     '/_authenticated/gestor/novo': {
       id: '/_authenticated/gestor/novo'
       path: '/novo'
@@ -344,6 +364,7 @@ interface AuthenticatedGestorRouteChildren {
   AuthenticatedGestorConteudoRoute: typeof AuthenticatedGestorConteudoRoute
   AuthenticatedGestorGuiasRoute: typeof AuthenticatedGestorGuiasRoute
   AuthenticatedGestorNovoRoute: typeof AuthenticatedGestorNovoRoute
+  AuthenticatedGestorScriptsRoute: typeof AuthenticatedGestorScriptsRoute
   AuthenticatedGestorIndexRoute: typeof AuthenticatedGestorIndexRoute
   AuthenticatedGestorCorretorIdRoute: typeof AuthenticatedGestorCorretorIdRoute
 }
@@ -352,6 +373,7 @@ const AuthenticatedGestorRouteChildren: AuthenticatedGestorRouteChildren = {
   AuthenticatedGestorConteudoRoute: AuthenticatedGestorConteudoRoute,
   AuthenticatedGestorGuiasRoute: AuthenticatedGestorGuiasRoute,
   AuthenticatedGestorNovoRoute: AuthenticatedGestorNovoRoute,
+  AuthenticatedGestorScriptsRoute: AuthenticatedGestorScriptsRoute,
   AuthenticatedGestorIndexRoute: AuthenticatedGestorIndexRoute,
   AuthenticatedGestorCorretorIdRoute: AuthenticatedGestorCorretorIdRoute,
 }
