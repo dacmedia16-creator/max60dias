@@ -1,32 +1,24 @@
 ## Objetivo
 
-Atualizar os textos de tarefas e guias "como fazer" que ainda citam "Excel", "maxwork" ou "inserir no Excel" para que apontem corretamente à **aba Contatos** do app. A mudança é idempotente e pode ser reaplicada sem efeito colateral.
+Adicionar orientação inicial para o corretor: tela de **boas-vindas no 1º acesso** (4 passos) + aba **Ajuda** sempre acessível pelo ícone (?) no cabeçalho. Conteúdo compartilhado em um arquivo único. Só para corretor — gestor não vê.
 
-## Escopo de mudança
+## Passos
 
-### 1. Tarefas (`public.plan_tasks`)
-Atualizar descrições de quatro variações de texto para o padrão único: "Contactar 10 ... e cadastrar na aba Contatos".
+1. **Migration** — adicionar coluna `onboarding_ok BOOLEAN NOT NULL DEFAULT false` em `public.profiles`. Corretores existentes verão as boas-vindas na próxima entrada (comportamento desejado).
 
-Textos afetados:
-- "Contactar 10 potenciais e inserir no Excel" → "Contactar 10 potenciais e cadastrar na aba Contatos"
-- "Contactar 10 CIPs (conhecidos) e inserir no Excel" → "Contactar 10 CIPs (conhecidos) e cadastrar na aba Contatos"
-- "Contactar 10 CIPs e inserir no Excel" → "Contactar 10 CIPs e cadastrar na aba Contatos"
-- "Contactar 10 CIPs no maxwork" → "Contactar 10 CIPs e cadastrar na aba Contatos"
+2. **Backend** — criar `src/lib/onboarding.functions.ts` com `marcarOnboardingVisto` (atualiza `profiles.onboarding_ok = true` para o usuário logado).
 
-### 2. Guias (`public.task_guides`)
-- Atualizar o conteúdo dos guias que ensinam a cadastrar no Excel, substituindo por passos para usar a aba Contatos.
-- Atualizar os padrões de correspondência (`padrao`) que ainda citam "excel" para casar com os novos textos das tarefas.
-- Atualizar os rótulos visíveis (`rotulo`) que ainda citam "Excel".
+3. **Conteúdo compartilhado** — criar `src/lib/ajuda-conteudo.ts` exportando `PASSOS_AJUDA` (4 passos: Hoje, Contatos, Scripts, Cartilha/Jornada).
 
-## Passos técnicos
+4. **Componente boas-vindas** — criar `src/components/BoasVindas.tsx`: modal (Dialog) com carrossel dos 4 passos, botões "Pular" e "Próximo/Começar!", que ao concluir chama `marcarOnboardingVisto` e invalida o cache `["meus"]`.
 
-1. Criar uma nova migration versionada em `supabase/migrations/` contendo exatamente o SQL fornecido (comandos `UPDATE` em `public.plan_tasks` e `public.task_guides`).
-2. Aplicar a migration no backend.
-3. Verificar via `supabase--read_query` que:
-   - `public.plan_tasks` não contém mais descrições com "Excel" ou "maxwork".
-   - `public.task_guides` não contém mais guias, padrões ou rótulos com "Excel".
+5. **Rota Ajuda** — criar `src/routes/_authenticated/ajuda.tsx` (`/ajuda`) exibindo os mesmos 4 passos em cards, com link para voltar à Hoje.
+
+6. **Cabeçalho** — atualizar `src/components/AppHeader.tsx` para incluir o ícone `HelpCircle` linkando para `/ajuda` (apenas quando `gestor=false`). Manter `BottomNav` com as 5 abas atuais (Hoje, Contatos, Scripts, Cartilha, Jornada).
+
+7. **Integração na Hoje** — em `src/routes/_authenticated/hoje.tsx`, importar `BoasVindas` e renderizar `<BoasVindas open={meusQ.data?.profile?.onboarding_ok === false} />` logo dentro da div raiz. `getMeusDados` já faz `select("*")` em profiles, então `onboarding_ok` já virá no payload sem alterar server function.
 
 ## Fora de escopo
 
-- Nenhuma alteração de schema, RLS, GRANTs ou outras tabelas.
-- Nenhuma mudança de código frontend (os textos já estão centralizados no banco).
+- Nenhuma alteração em RLS/GRANTs de `profiles` (a policy de UPDATE do próprio registro já existe).
+- Nenhuma mudança no menu do gestor ou em outras telas.
