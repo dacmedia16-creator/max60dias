@@ -48,6 +48,13 @@ function GestorLayout() {
           >
             Scripts modelo
           </Link>
+          <Link
+            to="/gestor/cartilha"
+            className="text-muted-foreground hover:text-foreground"
+            activeProps={{ className: "font-semibold text-secondary" }}
+          >
+            Cartilha
+          </Link>
         </div>
       </nav>
       <div className="mx-auto max-w-6xl p-4">

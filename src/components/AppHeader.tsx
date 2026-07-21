@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "@tanstack/react-router";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { LogOut } from "lucide-react";
+import { LogOut, CalendarCheck, Users, MessageSquareText, BookOpen, Map } from "lucide-react";
 
 export function AppHeader({ title, gestor = false }: { title: string; gestor?: boolean }) {
   const navigate = useNavigate();
@@ -31,24 +31,25 @@ export function AppHeader({ title, gestor = false }: { title: string; gestor?: b
 }
 
 export function BottomNav() {
+  const base = "flex flex-col items-center gap-0.5 py-2 text-[11px] font-medium text-muted-foreground";
+  const active = { className: "flex flex-col items-center gap-0.5 py-2 text-[11px] font-semibold text-primary" };
   return (
     <nav className="sticky bottom-0 z-40 grid grid-cols-5 border-t bg-card">
-      {[
-        { to: "/hoje", label: "Hoje" },
-        { to: "/contatos", label: "Contatos" },
-        { to: "/scripts", label: "Scripts" },
-        { to: "/metas", label: "Metas" },
-        { to: "/jornada", label: "Jornada" },
-      ].map((it) => (
-        <Link
-          key={it.to}
-          to={it.to}
-          className="py-3 text-center text-xs font-medium text-muted-foreground"
-          activeProps={{ className: "py-3 text-center text-xs font-semibold text-primary" }}
-        >
-          {it.label}
-        </Link>
-      ))}
+      <Link to="/hoje" className={base} activeProps={active}>
+        <CalendarCheck className="h-5 w-5" /> Hoje
+      </Link>
+      <Link to="/contatos" className={base} activeProps={active}>
+        <Users className="h-5 w-5" /> Contatos
+      </Link>
+      <Link to="/scripts" className={base} activeProps={active}>
+        <MessageSquareText className="h-5 w-5" /> Scripts
+      </Link>
+      <Link to="/cartilha" className={base} activeProps={active}>
+        <BookOpen className="h-5 w-5" /> Cartilha
+      </Link>
+      <Link to="/jornada" className={base} activeProps={active}>
+        <Map className="h-5 w-5" /> Jornada
+      </Link>
     </nav>
   );
 }

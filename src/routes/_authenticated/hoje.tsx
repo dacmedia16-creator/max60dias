@@ -21,6 +21,7 @@ import { toast } from "sonner";
 import { BookOpen, PlayCircle, CheckCircle2, HelpCircle, Minus, Plus } from "lucide-react";
 import { findGuideForTask } from "@/lib/task-guides";
 import { listarAcaoRua, salvarAcaoRua } from "@/lib/acao-rua.functions";
+import { listarMetas, salvarMeta } from "@/lib/metas.functions";
 
 export const Route = createFileRoute("/_authenticated/hoje")({
   ssr: false,
@@ -40,6 +41,9 @@ function HojePage() {
   const acaoFn = useServerFn(listarAcaoRua);
   const salvarAcao = useServerFn(salvarAcaoRua);
   const acaoQ = useQuery({ queryKey: ["acao-rua"], queryFn: () => acaoFn() });
+  const metasFn = useServerFn(listarMetas);
+  const salvarMetaFn = useServerFn(salvarMeta);
+  const metasQ = useQuery({ queryKey: ["metas"], queryFn: () => metasFn() });
 
   useEffect(() => {
     if (meusQ.data?.isGestor && !meusQ.data.isCorretor) navigate({ to: "/gestor" });
@@ -97,6 +101,32 @@ function HojePage() {
   const feitas = tarefasDoDia.filter((t: any) => progressoMap.get(t.id)).length;
   const pct = tarefasDoDia.length ? Math.round((feitas / tarefasDoDia.length) * 100) : 0;
   const pctTotal = Math.round(((dia - 1 + pct / 100) / 35) * 100);
+
+  const semanaAtual = Math.max(1, Math.min(8, Math.ceil(dia / 5)));
+  const metaAtual = useMemo(
+    () => ((metasQ.data as any)?.metas ?? []).find((m: any) => m.semana === semanaAtual),
+    [metasQ.data, semanaAtual],
+  );
+  const [meta, setMeta] = useState({ objetivo: "", reflexao: "", resultado: "" });
+  useEffect(() => {
+    setMeta({
+      objetivo: metaAtual?.objetivo ?? "",
+      reflexao: metaAtual?.reflexao ?? "",
+      resultado: metaAtual?.resultado ?? "",
+    });
+  }, [metaAtual?.semana, metaAtual?.objetivo, metaAtual?.reflexao, metaAtual?.resultado]);
+  const metaChanged =
+    meta.objetivo !== (metaAtual?.objetivo ?? "") ||
+    meta.reflexao !== (metaAtual?.reflexao ?? "") ||
+    meta.resultado !== (metaAtual?.resultado ?? "");
+  const metaMut = useMutation({
+    mutationFn: (d: any) => salvarMetaFn({ data: d }),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["metas"] });
+      toast.success("Meta da semana salva!");
+    },
+    onError: (e: any) => toast.error(e.message),
+  });
 
   const [notas, setNotas] = useState("");
   const [capituloLido, setCapituloLido] = useState(false);
@@ -233,6 +263,44 @@ function HojePage() {
               onChange={(e) => setNotas(e.target.value)}
               rows={4}
             />
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardContent className="space-y-2 p-4">
+            <div className="font-semibold">Metas da semana {semanaAtual}</div>
+            <div>
+              <label className="text-xs text-muted-foreground">Objetivo: o que quero alcançar</label>
+              <Textarea
+                rows={2}
+                value={meta.objetivo}
+                onChange={(e) => setMeta((p) => ({ ...p, objetivo: e.target.value }))}
+              />
+            </div>
+            <div>
+              <label className="text-xs text-muted-foreground">Reflexão: o que aprendi</label>
+              <Textarea
+                rows={2}
+                value={meta.reflexao}
+                onChange={(e) => setMeta((p) => ({ ...p, reflexao: e.target.value }))}
+              />
+            </div>
+            <div>
+              <label className="text-xs text-muted-foreground">Resultado: o que de fato aconteceu</label>
+              <Textarea
+                rows={2}
+                value={meta.resultado}
+                onChange={(e) => setMeta((p) => ({ ...p, resultado: e.target.value }))}
+              />
+            </div>
+            <Button
+              className="w-full"
+              variant="secondary"
+              disabled={!metaChanged || metaMut.isPending}
+              onClick={() => metaMut.mutate({ semana: semanaAtual, ...meta })}
+            >
+              Salvar meta da semana
+            </Button>
           </CardContent>
         </Card>
 
