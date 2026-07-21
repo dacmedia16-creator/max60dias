@@ -34,6 +34,13 @@ function GestorLayout() {
           >
             Vídeos do plano
           </Link>
+          <Link
+            to="/gestor/guias"
+            className="text-muted-foreground hover:text-foreground"
+            activeProps={{ className: "font-semibold text-secondary" }}
+          >
+            Guias das tarefas
+          </Link>
         </div>
       </nav>
       <div className="mx-auto max-w-6xl p-4">

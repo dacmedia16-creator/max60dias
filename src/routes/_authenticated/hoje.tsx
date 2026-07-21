@@ -15,9 +15,11 @@ import { Progress } from "@/components/ui/progress";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { diaAtualDoCorretor } from "@/lib/dias-uteis";
 import { toast } from "sonner";
-import { BookOpen, PlayCircle, CheckCircle2 } from "lucide-react";
+import { BookOpen, PlayCircle, CheckCircle2, HelpCircle } from "lucide-react";
+import { findGuideForTask } from "@/lib/task-guides";
 
 export const Route = createFileRoute("/_authenticated/hoje")({
   ssr: false,
@@ -156,6 +158,7 @@ function HojePage() {
             <ul className="space-y-3">
               {tarefasDoDia.map((t: any) => {
                 const done = progressoMap.get(t.id) ?? false;
+                const guide = findGuideForTask(t.descricao, planoQ.data?.guides);
                 return (
                   <li key={t.id} className="flex items-start gap-3 rounded-md p-2 hover:bg-muted">
                     <Checkbox
@@ -163,7 +166,28 @@ function HojePage() {
                       checked={done}
                       onCheckedChange={(v) => toggleMut.mutate({ taskId: t.id, concluida: !!v })}
                     />
-                    <span className={done ? "line-through text-muted-foreground" : ""}>{t.descricao}</span>
+                    <span className={`flex-1 ${done ? "line-through text-muted-foreground" : ""}`}>{t.descricao}</span>
+                    {guide && (
+                      <Sheet>
+                        <SheetTrigger asChild>
+                          <button
+                            type="button"
+                            aria-label="Como fazer esta tarefa"
+                            className="mt-0.5 shrink-0 text-muted-foreground hover:text-primary"
+                          >
+                            <HelpCircle className="h-5 w-5" />
+                          </button>
+                        </SheetTrigger>
+                        <SheetContent side="bottom" className="max-h-[85vh] overflow-y-auto">
+                          <SheetHeader>
+                            <SheetTitle className="text-left">{guide.rotulo}</SheetTitle>
+                          </SheetHeader>
+                          <div className="mt-4 whitespace-pre-line text-sm leading-relaxed">
+                            {guide.guia}
+                          </div>
+                        </SheetContent>
+                      </Sheet>
+                    )}
                   </li>
                 );
               })}
