@@ -14,6 +14,47 @@ export type Database = {
   }
   public: {
     Tables: {
+      acao_rua: {
+        Row: {
+          blocos: number
+          cartoes: number
+          dia: number
+          flyers: number
+          id: string
+          sms: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          blocos?: number
+          cartoes?: number
+          dia: number
+          flyers?: number
+          id?: string
+          sms?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          blocos?: number
+          cartoes?: number
+          dia?: number
+          flyers?: number
+          id?: string
+          sms?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "acao_rua_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       contatos: {
         Row: {
           created_at: string
@@ -108,6 +149,44 @@ export type Database = {
           },
         ]
       }
+      metas_semana: {
+        Row: {
+          id: string
+          objetivo: string | null
+          reflexao: string | null
+          resultado: string | null
+          semana: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          objetivo?: string | null
+          reflexao?: string | null
+          resultado?: string | null
+          semana: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          id?: string
+          objetivo?: string | null
+          reflexao?: string | null
+          resultado?: string | null
+          semana?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "metas_semana_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       plan_days: {
         Row: {
           capitulo: string | null
@@ -188,6 +267,68 @@ export type Database = {
           email?: string
           id?: string
           nome?: string
+        }
+        Relationships: []
+      }
+      scripts_corretor: {
+        Row: {
+          categoria: string
+          conteudo: string
+          created_at: string
+          id: string
+          titulo: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          categoria?: string
+          conteudo: string
+          created_at?: string
+          id?: string
+          titulo: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          categoria?: string
+          conteudo?: string
+          created_at?: string
+          id?: string
+          titulo?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "scripts_corretor_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      scripts_modelo: {
+        Row: {
+          categoria: string
+          conteudo: string
+          id: number
+          ordem: number
+          titulo: string
+        }
+        Insert: {
+          categoria: string
+          conteudo: string
+          id?: number
+          ordem?: number
+          titulo: string
+        }
+        Update: {
+          categoria?: string
+          conteudo?: string
+          id?: number
+          ordem?: number
+          titulo?: string
         }
         Relationships: []
       }
