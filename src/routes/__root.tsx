@@ -82,17 +82,21 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         name: "description",
         content:
-          "Acompanhamento diário dos primeiros 35 dias úteis dos corretores da RE/MAX Única Escolha.",
+          "Acompanhamento diário dos primeiros 60 dias úteis dos corretores da RE/MAX Única Escolha.",
       },
       { name: "author", content: "RE/MAX Única Escolha" },
       { property: "og:title", content: "Plano 60 Dias — RE/MAX Única Escolha" },
       {
         property: "og:description",
         content:
-          "Jornada guiada para corretores nos primeiros 35 dias úteis, com painel de acompanhamento.",
+          "Acompanhamento diário dos primeiros 60 dias úteis dos corretores da RE/MAX Única Escolha.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Plano 60 Dias — RE/MAX Única Escolha" },
+      { name: "twitter:description", content: "Acompanhamento diário dos primeiros 60 dias úteis dos corretores da RE/MAX Única Escolha." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/b06e9e1e-0b48-4004-abf9-5a2c45627c6d/id-preview-a750557f--00530157-841c-457f-98a3-965aa209c37e.lovable.app-1784604356639.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/b06e9e1e-0b48-4004-abf9-5a2c45627c6d/id-preview-a750557f--00530157-841c-457f-98a3-965aa209c37e.lovable.app-1784604356639.png" },
     ],
     links: [
       {
