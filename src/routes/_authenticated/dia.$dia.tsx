@@ -5,7 +5,9 @@ import { useServerFn } from "@tanstack/react-start";
 import { getMeusDados, getPlanoCompleto } from "@/lib/plano.functions";
 import { AppHeader, BottomNav } from "@/components/AppHeader";
 import { Card, CardContent } from "@/components/ui/card";
-import { CheckCircle2, Circle } from "lucide-react";
+import { CheckCircle2, Circle, HelpCircle } from "lucide-react";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { findGuideForTask } from "@/lib/task-guides";
 
 export const Route = createFileRoute("/_authenticated/dia/$dia")({
   ssr: false,
@@ -50,6 +52,7 @@ function DiaPage() {
             <ul className="space-y-2 text-sm">
               {tarefas.map((t: any) => {
                 const done = progresso.get(t.id);
+                const guide = findGuideForTask(t.descricao, (planoQ.data as any)?.guides);
                 return (
                   <li key={t.id} className="flex items-start gap-2">
                     {done ? (
@@ -57,7 +60,24 @@ function DiaPage() {
                     ) : (
                       <Circle className="mt-0.5 h-4 w-4 text-muted-foreground" />
                     )}
-                    <span className={done ? "line-through text-muted-foreground" : ""}>{t.descricao}</span>
+                    <span className={`flex-1 ${done ? "line-through text-muted-foreground" : ""}`}>{t.descricao}</span>
+                    {guide && (
+                      <Sheet>
+                        <SheetTrigger asChild>
+                          <button type="button" aria-label="Como fazer" className="shrink-0 text-muted-foreground hover:text-primary">
+                            <HelpCircle className="h-4 w-4" />
+                          </button>
+                        </SheetTrigger>
+                        <SheetContent side="bottom" className="max-h-[85vh] overflow-y-auto">
+                          <SheetHeader>
+                            <SheetTitle className="text-left">{guide.rotulo}</SheetTitle>
+                          </SheetHeader>
+                          <div className="mt-4 whitespace-pre-line text-sm leading-relaxed">
+                            {guide.guia}
+                          </div>
+                        </SheetContent>
+                      </Sheet>
+                    )}
                   </li>
                 );
               })}
