@@ -1,39 +1,22 @@
-Adicionar aba **Cartilha** ao menu do corretor, remover a aba **Metas** e mover as Metas da semana para dentro da tela **Hoje**, como um card compacto que edita apenas a semana atual (as 8 semanas continuam salvas na mesma tabela).
+## Objetivo
 
-## Backend (uma migration)
+Registrar os 14 scripts oficiais da Cartilha RE/MAX v2.0 como migration versionada no repositório, garantindo que a substituição fique persistida em `supabase/migrations/` e não apenas na sessão temporária.
 
-Criar tabela `public.cartilha_secoes` (id, ordem, titulo, conteudo) com:
-- `GRANT SELECT, UPDATE` para `authenticated`, `ALL` para `service_role`.
-- RLS: `SELECT` para qualquer autenticado; `UPDATE` só para gestor (`has_role(auth.uid(),'gestor')`).
-- Seed com as 8 seções enviadas.
+## Passos
 
-Nenhuma outra tabela é tocada.
+1. Criar nova migration em `supabase/migrations/` (via ferramenta de migration do Supabase, que gera o arquivo versionado) contendo exatamente:
+   - `DELETE FROM public.scripts_modelo;`
+   - `INSERT INTO public.scripts_modelo (categoria, titulo, conteudo, ordem) VALUES (...)` com os 14 scripts fornecidos (categorias `reuniao`, `comprador`, `fechamento`; ordens 1–14).
 
-## Server functions
-
-`src/lib/cartilha.functions.ts` (novo):
-- `getCartilha` — retorna todas as seções ordenadas.
-- `atualizarCartilhaSecao` — upsert de `titulo`, `conteudo`, `ordem` de uma seção (RLS restringe a gestor).
-
-## Frontend
-
-`src/components/AppHeader.tsx` — `BottomNav` com 5 abas, cada uma com ícone + rótulo curto:
-Hoje · Contatos · Scripts · **Cartilha** · Jornada (troca `Metas` por `Cartilha`, mesmo estilo do patch).
-
-`src/routes/_authenticated/cartilha.tsx` (novo) — lista as seções em accordion (uma aberta por vez), fonte pequena e `whitespace-pre-wrap`.
-
-`src/routes/_authenticated/hoje.tsx` — adicionar novo card **"Metas da semana N"** logo depois do card de notas:
-- calcula `semana = ceil(dia/5)` clampado 1–8;
-- carrega/upserta via `listarMetas` / `salvarMeta` já existentes;
-- três textareas (Objetivo, Reflexão, Resultado) + botão "Salvar meta da semana".
-
-Remover `src/routes/_authenticated/metas.tsx` (a rota `/metas` some do routeTree gerado; o painel do gestor não linkava para ela).
-
-`src/routes/_authenticated/gestor.tsx` — adicionar link **"Cartilha"** na nav do gestor apontando para `/gestor/cartilha`.
-
-`src/routes/_authenticated/gestor.cartilha.tsx` (novo) — lista as seções com Input (título), Input numérico (ordem) e Textarea grande (conteúdo), botão Salvar por item, chamando `atualizarCartilhaSecao`.
+2. Após aplicar, verificar via `supabase--read_query`:
+   - `SELECT count(*) FROM public.scripts_modelo` → deve retornar 14.
+   - `SELECT titulo FROM public.scripts_modelo WHERE titulo IN ('Agendar Uma Reunião','Fazendo Uma Proposta')` → deve retornar as 2 linhas.
 
 ## Fora de escopo
 
-- Não substituir os scripts modelo pelos 16 oficiais (fica para outra rodada, se solicitado).
-- Sem mexer em outras tabelas, políticas ou nas telas de `contatos`, `scripts`, `jornada`, `dia/$dia`.
+- Nenhuma alteração em schema, RLS, GRANTs, outras tabelas ou na tela `/scripts`.
+- Nenhuma mudança de código frontend.
+
+## Nota técnica
+
+O SQL enviado contém DML puro (DELETE + INSERT). Normalmente dados vão pela ferramenta de insert, mas como o pedido é explicitamente "migration versionada em `supabase/migrations/`", usarei a ferramenta de migration para que o arquivo fique commitado no repositório.
