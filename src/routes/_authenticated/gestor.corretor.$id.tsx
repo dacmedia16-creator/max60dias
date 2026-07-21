@@ -3,7 +3,9 @@ import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { detalheCorretor, getPlanoCompleto } from "@/lib/plano.functions";
+import { contatosDoCorretor } from "@/lib/contatos.functions";
 import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { diaAtualDoCorretor } from "@/lib/dias-uteis";
 import { CheckCircle2, Circle } from "lucide-react";
 
@@ -16,8 +18,14 @@ function Detalhe() {
   const { id } = Route.useParams();
   const det = useServerFn(detalheCorretor);
   const plano = useServerFn(getPlanoCompleto);
+  const contatosFn = useServerFn(contatosDoCorretor);
   const detQ = useQuery({ queryKey: ["gestor-det", id], queryFn: () => det({ data: { userId: id } }) });
   const planoQ = useQuery({ queryKey: ["plano"], queryFn: () => plano() });
+  const contatosQ = useQuery({
+    queryKey: ["gestor-contatos", id],
+    queryFn: () => contatosFn({ data: { userId: id } }),
+  });
+  const contatos = (contatosQ.data as any)?.contatos ?? [];
 
   const dias = (planoQ.data as any)?.dias ?? [];
   const tarefas = (planoQ.data as any)?.tarefas ?? [];
@@ -39,6 +47,36 @@ function Detalhe() {
         <div className="text-sm text-muted-foreground">{p?.email}</div>
         <div className="mt-1 text-sm">Dia atual: <span className="font-semibold">{diaAtual}/35</span> · início {p?.data_inicio ?? "—"}</div>
       </CardContent></Card>
+
+      <Card>
+        <CardContent className="p-4">
+          <div className="mb-2 flex items-center justify-between">
+            <div className="font-semibold">Contatos cadastrados</div>
+            <div className="text-sm text-muted-foreground">{contatos.length} no total</div>
+          </div>
+          {contatos.length === 0 ? (
+            <div className="text-sm text-muted-foreground">Nenhum contato cadastrado ainda.</div>
+          ) : (
+            <div className="space-y-2">
+              {contatos.map((c: any) => (
+                <div key={c.id} className="flex items-center justify-between rounded-md border p-2 text-sm">
+                  <div className="min-w-0">
+                    <div className="truncate font-medium">{c.nome}</div>
+                    <div className="text-xs text-muted-foreground">
+                      {c.tipo}{c.telefone ? ` · ${c.telefone}` : ""}
+                      {c.proximo_retorno ? ` · retornar ${c.proximo_retorno}` : ""}
+                    </div>
+                    {c.observacoes && (
+                      <div className="mt-0.5 text-xs text-muted-foreground">{c.observacoes}</div>
+                    )}
+                  </div>
+                  <Badge variant="outline" className="shrink-0">{c.status}</Badge>
+                </div>
+              ))}
+            </div>
+          )}
+        </CardContent>
+      </Card>
 
       <div className="space-y-3">
         {dias.map((d: any) => {
