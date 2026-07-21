@@ -14,16 +14,211 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      daily_reports: {
+        Row: {
+          auto_avaliacao: number | null
+          capitulo_lido: boolean
+          created_at: string
+          data: string
+          dia: number
+          id: string
+          notas: string | null
+          pct_concluido: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          auto_avaliacao?: number | null
+          capitulo_lido?: boolean
+          created_at?: string
+          data?: string
+          dia: number
+          id?: string
+          notas?: string | null
+          pct_concluido?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          auto_avaliacao?: number | null
+          capitulo_lido?: boolean
+          created_at?: string
+          data?: string
+          dia?: number
+          id?: string
+          notas?: string | null
+          pct_concluido?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "daily_reports_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      plan_days: {
+        Row: {
+          capitulo: string | null
+          dia: number
+          mes: number
+          semana: number
+          semana_frase: string | null
+          semana_titulo: string
+          video_url: string | null
+        }
+        Insert: {
+          capitulo?: string | null
+          dia: number
+          mes: number
+          semana: number
+          semana_frase?: string | null
+          semana_titulo: string
+          video_url?: string | null
+        }
+        Update: {
+          capitulo?: string | null
+          dia?: number
+          mes?: number
+          semana?: number
+          semana_frase?: string | null
+          semana_titulo?: string
+          video_url?: string | null
+        }
+        Relationships: []
+      }
+      plan_tasks: {
+        Row: {
+          descricao: string
+          dia: number
+          id: number
+          ordem: number
+        }
+        Insert: {
+          descricao: string
+          dia: number
+          id?: number
+          ordem: number
+        }
+        Update: {
+          descricao?: string
+          dia?: number
+          id?: number
+          ordem?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "plan_tasks_dia_fkey"
+            columns: ["dia"]
+            isOneToOne: false
+            referencedRelation: "plan_days"
+            referencedColumns: ["dia"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          data_inicio: string | null
+          email: string
+          id: string
+          nome: string
+        }
+        Insert: {
+          created_at?: string
+          data_inicio?: string | null
+          email?: string
+          id: string
+          nome?: string
+        }
+        Update: {
+          created_at?: string
+          data_inicio?: string | null
+          email?: string
+          id?: string
+          nome?: string
+        }
+        Relationships: []
+      }
+      task_progress: {
+        Row: {
+          concluida: boolean
+          id: string
+          task_id: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          concluida?: boolean
+          id?: string
+          task_id: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          concluida?: boolean
+          id?: string
+          task_id?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "task_progress_task_id_fkey"
+            columns: ["task_id"]
+            isOneToOne: false
+            referencedRelation: "plan_tasks"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "task_progress_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "corretor" | "gestor"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +345,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["corretor", "gestor"],
+    },
   },
 } as const
