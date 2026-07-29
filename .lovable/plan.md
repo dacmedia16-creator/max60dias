@@ -1,17 +1,11 @@
-## Plano: Logo grande no cabeçalho da fanpage
+Substituir o logo atual do cabeçalho da fanpage (`/`) pelo novo logo enviado (`RMX_Logo_2026_UE-01.png`), mantendo o mesmo estilo e tamanho.
 
-### Contexto
-O usuário selecionou o elemento de texto do cabeçalho da landing page (`/`) que atualmente exibe "RE/MAX Plano 60 Dias" e pediu para colocar o logo grande. A imagem do logo RE/MAX Única Escolha já foi enviada e já existe um asset pointer em `src/assets/remax-logo.png.asset.json`.
+### Passos
+1. Criar um asset da Lovable CDN a partir do upload `/mnt/user-uploads/RMX_Logo_2026_UE-01.png` e salvá-lo como `src/assets/remax-logo-ue-01.png.asset.json`.
+2. Atualizar `src/routes/index.tsx` para importar o novo asset e usá-lo na tag `<img>` do logo no cabeçalho (linha ~119), mantendo o fundo claro (`bg-brand-ink`) e o tamanho responsivo (`h-10 sm:h-12`).
+3. Executar `tsgo --noEmit` (ou `bun run build`) para garantir que a alteração compila corretamente.
 
-### O que será feito
-1. Substituir o texto estático do cabeçalho (`src/routes/index.tsx`, linhas 118-123) por uma imagem que carrega o logo RE/MAX Única Escolha a partir do asset pointer existente.
-2. Aplicar altura apropriada para que o logo fique "grande" e visível no cabeçalho (ex: `h-10` ou `h-12` em mobile, maior em desktop se necessário).
-3. Manter o link/estrutura do cabeçalho e o botão "Entrar" ao lado.
-4. Garantir que a imagem tenha `alt` descritivo e seja responsiva.
-
-### Arquivos alterados
-- `src/routes/index.tsx` — substituir o `<span>` do logo por `<img src={remaxLogoAsset.url} alt="RE/MAX Única Escolha" className="..." />` e importar o asset pointer.
-
-### Não alterar
-- Nenhuma outra página ou componente fora do cabeçalho da fanpage.
-- Nenhuma lógica de autenticação, roteamento ou banco de dados.
+### Detalhes técnicos
+- O logo atual é renderizado dentro de uma `div` com `bg-brand-ink` para contrastar com o fundo azul-marinho do header.
+- A imagem enviada tem fundo preto, então a placa clara de contraste continuará sendo usada.
+- O asset anterior (`remax-logo.png.asset.json`) permanece intacto, caso seja usado em outro lugar.
