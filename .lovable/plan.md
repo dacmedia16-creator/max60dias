@@ -1,24 +1,17 @@
-## Objetivo
+## Plano: Logo grande no cabeçalho da fanpage
 
-Na foto da equipe (seção "A jornada, semana a semana"), a parede azul ao fundo tem um logotipo vermelho fictício ("REAL Imóveis"). Trocar esse logo da parede pelo logotipo **RE/MAX Imóveis Única Escolha**.
+### Contexto
+O usuário selecionou o elemento de texto do cabeçalho da landing page (`/`) que atualmente exibe "RE/MAX Plano 60 Dias" e pediu para colocar o logo grande. A imagem do logo RE/MAX Única Escolha já foi enviada e já existe um asset pointer em `src/assets/remax-logo.png.asset.json`.
 
-## O que muda
+### O que será feito
+1. Substituir o texto estático do cabeçalho (`src/routes/index.tsx`, linhas 118-123) por uma imagem que carrega o logo RE/MAX Única Escolha a partir do asset pointer existente.
+2. Aplicar altura apropriada para que o logo fique "grande" e visível no cabeçalho (ex: `h-10` ou `h-12` em mobile, maior em desktop se necessário).
+3. Manter o link/estrutura do cabeçalho e o botão "Entrar" ao lado.
+4. Garantir que a imagem tenha `alt` descritivo e seja responsiva.
 
-1. **Edição da própria foto**
-   - A imagem `src/assets/equipe.jpg` é editada por IA: o logo vermelho na parede azul do fundo é substituído pelo logotipo RE/MAX Única Escolha (balão vermelho/azul + "RE/MAX" + "Única Escolha"), respeitando perspectiva, iluminação e desfoque do fundo.
-   - O restante da foto (pessoas, ambiente, enquadramento) permanece igual.
+### Arquivos alterados
+- `src/routes/index.tsx` — substituir o `<span>` do logo por `<img src={remaxLogoAsset.url} alt="RE/MAX Única Escolha" className="..." />` e importar o asset pointer.
 
-2. **Remoção da plaquinha sobreposta**
-   - A "plaquinha" branca com o logo que foi colocada por cima da foto no passo anterior é removida, já que a marca passa a estar na própria parede.
-   - O degradê escuro na base da foto também sai, pois não é mais necessário.
-
-3. **Asset do logo**
-   - O pointer `src/assets/remax-logo.png.asset.json` continua no projeto (usado como referência da marca) e pode ser reaproveitado depois no rodapé/cabeçalho, se você quiser.
-
-## Detalhes técnicos
-
-- Edição da imagem com a ferramenta de edição por IA, gravando sobre `src/assets/equipe.jpg` (mesmas dimensões).
-- Alteração de marcação restrita à seção JORNADA em `src/routes/index.tsx`: volta a ser uma `<img>` simples dentro do painel arredondado.
-- Nenhuma mudança em rotas autenticadas, banco ou lógica de negócio.
-
-Observação: a geração por IA pode não reproduzir o logotipo com fidelidade tipográfica perfeita. Se o resultado não ficar bom, a alternativa é sobrepor o PNG oficial exatamente sobre a área da parede, com perspectiva simulada em CSS.
+### Não alterar
+- Nenhuma outra página ou componente fora do cabeçalho da fanpage.
+- Nenhuma lógica de autenticação, roteamento ou banco de dados.
