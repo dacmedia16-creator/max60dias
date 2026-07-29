@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import heroAsset from "@/assets/remax-hero.png.asset.json";
+import bannerAsset from "@/assets/remax-banner.png.asset.json";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
