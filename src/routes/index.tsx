@@ -1,7 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import bannerAsset from "@/assets/remax-banner.png.asset.json";
+import heroCorretor from "@/assets/hero-corretor.jpg";
+import equipeFoto from "@/assets/equipe.jpg";
+import gestorFoto from "@/assets/gestor.jpg";
+import chavesFoto from "@/assets/chaves.jpg";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import {
   CalendarCheck,
   Users,
@@ -11,6 +14,8 @@ import {
   LineChart,
   Target,
   ShieldCheck,
+  Sparkles,
+  ArrowRight,
 } from "lucide-react";
 
 export const Route = createFileRoute("/")({
