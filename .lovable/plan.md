@@ -1,24 +1,24 @@
 ## Objetivo
 
-Colocar o logo **RE/MAX Imóveis Única Escolha** (arquivo enviado) sobre a foto selecionada — a foto da equipe, na seção "A jornada, semana a semana" em `src/routes/index.tsx` (linha 241).
+Na foto da equipe (seção "A jornada, semana a semana"), a parede azul ao fundo tem um logotipo vermelho fictício ("REAL Imóveis"). Trocar esse logo da parede pelo logotipo **RE/MAX Imóveis Única Escolha**.
 
 ## O que muda
 
-1. **Logo publicado como asset**
-   - O PNG enviado vira um asset de CDN (`src/assets/remax-logo.png.asset.json`) via `lovable-assets`, sem deixar o binário no repositório.
+1. **Edição da própria foto**
+   - A imagem `src/assets/equipe.jpg` é editada por IA: o logo vermelho na parede azul do fundo é substituído pelo logotipo RE/MAX Única Escolha (balão vermelho/azul + "RE/MAX" + "Única Escolha"), respeitando perspectiva, iluminação e desfoque do fundo.
+   - O restante da foto (pessoas, ambiente, enquadramento) permanece igual.
 
-2. **Logo aplicado sobre a foto da equipe**
-   - A foto ganha um contêiner com o logo sobreposto, no canto inferior esquerdo da imagem.
-   - Como o logo é azul-marinho sobre fundo transparente/branco, ele fica dentro de uma "plaquinha" clara com cantos arredondados e leve desfoque de fundo (mesma linguagem de vidro já usada na página), garantindo contraste e legibilidade sobre a foto escura.
-   - Um degradê sutil escurecendo a base da foto reforça a leitura do logo.
+2. **Remoção da plaquinha sobreposta**
+   - A "plaquinha" branca com o logo que foi colocada por cima da foto no passo anterior é removida, já que a marca passa a estar na própria parede.
+   - O degradê escuro na base da foto também sai, pois não é mais necessário.
 
-3. **Responsivo**
-   - No celular o logo aparece menor e proporcional, mantendo margem segura em relação às bordas da imagem.
+3. **Asset do logo**
+   - O pointer `src/assets/remax-logo.png.asset.json` continua no projeto (usado como referência da marca) e pode ser reaproveitado depois no rodapé/cabeçalho, se você quiser.
 
 ## Detalhes técnicos
 
-- Alteração isolada em `src/routes/index.tsx`: a `<img>` da equipe passa a ficar dentro de um wrapper `relative`, com o logo em `absolute` e `alt` descritivo.
-- Nenhuma cor hardcoded — usa os tokens/utilitários de marca já existentes em `src/styles.css`.
+- Edição da imagem com a ferramenta de edição por IA, gravando sobre `src/assets/equipe.jpg` (mesmas dimensões).
+- Alteração de marcação restrita à seção JORNADA em `src/routes/index.tsx`: volta a ser uma `<img>` simples dentro do painel arredondado.
 - Nenhuma mudança em rotas autenticadas, banco ou lógica de negócio.
 
-Se preferir o logo em outro ponto (centralizado, canto superior direito, ou como marca-d'água grande e translúcida ao fundo da foto), é só dizer que eu ajusto antes de implementar.
+Observação: a geração por IA pode não reproduzir o logotipo com fidelidade tipográfica perfeita. Se o resultado não ficar bom, a alternativa é sobrepor o PNG oficial exatamente sobre a área da parede, com perspectiva simulada em CSS.
