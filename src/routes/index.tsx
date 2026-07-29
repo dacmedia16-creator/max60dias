@@ -116,11 +116,13 @@ function SobrePage() {
       {/* BARRA DE TOPO */}
       <header className="sticky top-0 z-50 border-b border-brand-line/40 bg-brand-navy-deep/80 backdrop-blur-xl">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-3">
-          <img
-            src={remaxLogoAsset.url}
-            alt="RE/MAX Única Escolha"
-            className="h-10 w-auto object-contain sm:h-12"
-          />
+          <div className="rounded-lg bg-brand-ink p-2 shadow-lg shadow-black/20">
+            <img
+              src={remaxLogoAsset.url}
+              alt="RE/MAX Única Escolha"
+              className="h-10 w-auto object-contain sm:h-12"
+            />
+          </div>
           <Link to="/auth">
             <Button size="sm" className="font-semibold">
               Entrar
