@@ -116,7 +116,7 @@ function SobrePage() {
       {/* BARRA DE TOPO */}
       <header className="sticky top-0 z-50 border-b border-brand-line/40 bg-brand-navy-deep/80 backdrop-blur-xl">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-3">
-          <div className="rounded-lg bg-brand-ink p-2 shadow-lg shadow-black/20">
+          <div className="p-1">
             <img
               src={remaxLogoUeAsset.url}
               alt="RE/MAX Única Escolha"
