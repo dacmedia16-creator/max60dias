@@ -78,6 +78,23 @@ const NUMEROS = [
 function SobrePage() {
   return (
     <main className="min-h-screen bg-background">
+      {/* BARRA DE TOPO */}
+      <div className="sticky top-0 z-50 border-b border-white/10 bg-secondary/95 backdrop-blur">
+        <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-3">
+          <span className="text-lg font-black tracking-tight text-white">
+            <span className="opacity-80">RE/</span>MAX
+            <span className="ml-2 hidden text-xs font-medium opacity-70 sm:inline">
+              Plano 60 Dias
+            </span>
+          </span>
+          <Link to="/auth">
+            <Button size="sm" className="font-semibold">
+              Entrar
+            </Button>
+          </Link>
+        </div>
+      </div>
+
       {/* HERO */}
       <section className="relative isolate overflow-hidden">
         <img
