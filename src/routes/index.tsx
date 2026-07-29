@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import bannerAsset from "@/assets/remax-banner.png.asset.json";
+import remaxLogoAsset from "@/assets/remax-logo.png.asset.json";
 import heroCorretor from "@/assets/hero-corretor.jpg";
 import equipeFoto from "@/assets/equipe.jpg";
 import gestorFoto from "@/assets/gestor.jpg";
@@ -115,12 +116,13 @@ function SobrePage() {
       {/* BARRA DE TOPO */}
       <header className="sticky top-0 z-50 border-b border-brand-line/40 bg-brand-navy-deep/80 backdrop-blur-xl">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-3">
-          <span className="text-lg font-black tracking-tight">
-            <span className="opacity-80">RE/</span>MAX
-            <span className="ml-2 hidden text-xs font-medium opacity-70 sm:inline">
-              Plano 60 Dias
-            </span>
-          </span>
+          <div className="rounded-lg bg-brand-ink p-2 shadow-lg shadow-black/20">
+            <img
+              src={remaxLogoAsset.url}
+              alt="RE/MAX Única Escolha"
+              className="h-10 w-auto object-contain sm:h-12"
+            />
+          </div>
           <Link to="/auth">
             <Button size="sm" className="font-semibold">
               Entrar
