@@ -80,13 +80,42 @@ const NUMEROS = [
   { valor: "100%", rotulo: "no celular" },
 ];
 
+const SEMANAS = [
+  {
+    s: "Semanas 1–2",
+    t: "Fundamentos",
+    d: "Posicionamento, mercado de relações, cadastro dos primeiros contatos e primeiras abordagens com script.",
+  },
+  {
+    s: "Semanas 3–4",
+    t: "Ação de rua",
+    d: "Cartões, flyers, blocos e captações. Os contadores diários mostram o volume real de esforço.",
+  },
+  {
+    s: "Semanas 5–6",
+    t: "Captação e visitas",
+    d: "Reuniões agendadas, apresentações de proposta e acompanhamento de proprietários e compradores.",
+  },
+  {
+    s: "Semana 7",
+    t: "Consistência",
+    d: "Rotina estabilizada, metas próprias da semana e autoavaliação para consolidar o hábito.",
+  },
+];
+
+const GESTOR_ITENS = [
+  { icon: Target, t: "Status por cor", d: "Verde, amarelo e vermelho por corretor." },
+  { icon: LineChart, t: "Média da equipe", d: "Percentual de execução consolidado." },
+  { icon: ShieldCheck, t: "Conteúdo editável", d: "Vídeos, guias, scripts e cartilha." },
+];
+
 function SobrePage() {
   return (
     <main className="min-h-screen bg-brand-navy text-brand-ink">
       {/* BARRA DE TOPO */}
-      <div className="sticky top-0 z-50 border-b border-brand-line/50 bg-brand-navy-deep/90 backdrop-blur">
-        <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-3">
-          <span className="text-lg font-black tracking-tight text-brand-ink">
+      <header className="sticky top-0 z-50 border-b border-brand-line/40 bg-brand-navy-deep/80 backdrop-blur-xl">
+        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-3">
+          <span className="text-lg font-black tracking-tight">
             <span className="opacity-80">RE/</span>MAX
             <span className="ml-2 hidden text-xs font-medium opacity-70 sm:inline">
               Plano 60 Dias
@@ -98,56 +127,80 @@ function SobrePage() {
             </Button>
           </Link>
         </div>
-      </div>
+      </header>
 
       {/* HERO */}
       <section className="relative isolate overflow-hidden bg-brand-navy-deep">
-        {/* arte institucional: faixa no topo no mobile, fundo no desktop */}
-        <img
-          src={bannerAsset.url}
-          alt="RE/MAX Única Escolha"
-          className="h-44 w-full object-cover object-right sm:absolute sm:inset-0 sm:h-full"
-        />
-        <div className="hidden sm:absolute sm:inset-0 sm:block sm:bg-gradient-to-r sm:from-brand-navy-deep sm:via-brand-navy-deep/85 sm:to-transparent" />
-        <div className="relative mx-auto max-w-5xl px-6 pb-16 pt-10 sm:py-32">
-          <p className="text-xs font-semibold uppercase tracking-[0.35em] text-brand-ink-muted">
-            RE/MAX Única Escolha
-          </p>
-          <h1 className="mt-4 max-w-2xl text-4xl font-black leading-[0.95] tracking-tight text-brand-ink sm:text-7xl">
-            Plano <span className="text-primary">60 Dias</span>
-          </h1>
-          <div className="mt-6 h-px w-40 bg-primary" />
-          <p className="mt-6 max-w-lg text-base leading-relaxed text-brand-ink-muted sm:text-lg">
-            Os primeiros 35 dias úteis definem a carreira de um corretor. Aqui eles
-            deixam de ser um caderno de tarefas e viram uma jornada de execução no
-            celular — com acompanhamento do gestor em tempo real.
-          </p>
-          <div className="mt-8 flex flex-wrap gap-3">
-            <Link to="/auth">
-              <Button size="lg" className="font-semibold">
-                Entrar no app
-              </Button>
-            </Link>
-            <a href="#pilares">
-              <Button
-                size="lg"
-                variant="outline"
-                className="border-brand-ink/40 bg-transparent font-semibold text-brand-ink hover:bg-brand-ink/10 hover:text-brand-ink"
-              >
-                Como funciona
-              </Button>
-            </a>
+        <div className="pointer-events-none absolute inset-0 brand-grid" />
+        <div className="pointer-events-none absolute -left-40 -top-40 h-[38rem] w-[38rem] rounded-full bg-secondary/25 blur-[120px]" />
+        <div className="pointer-events-none absolute -right-32 top-24 h-[32rem] w-[32rem] rounded-full bg-primary/20 blur-[120px]" />
+
+        <div className="relative mx-auto grid max-w-6xl items-center gap-12 px-6 pb-20 pt-16 lg:grid-cols-[1.05fr_0.95fr] lg:py-28">
+          <div className="animate-in fade-in slide-in-from-bottom-4 duration-700">
+            <span className="inline-flex items-center gap-2 rounded-full border border-primary/40 bg-primary/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.25em] text-brand-ink">
+              <Sparkles className="h-3.5 w-3.5 text-primary" />
+              RE/MAX Única Escolha
+            </span>
+            <h1 className="mt-6 text-5xl font-black leading-[0.92] tracking-tight sm:text-7xl">
+              Plano <span className="brand-gradient-text">60 Dias</span>
+            </h1>
+            <div className="mt-6 brand-rule w-48" />
+            <p className="mt-6 max-w-xl text-base leading-relaxed text-brand-ink-muted sm:text-lg">
+              Os primeiros 35 dias úteis definem a carreira de um corretor. Aqui eles
+              deixam de ser um caderno de tarefas e viram uma jornada de execução no
+              celular — com acompanhamento do gestor em tempo real.
+            </p>
+            <div className="mt-9 flex flex-wrap gap-3">
+              <Link to="/auth">
+                <Button size="lg" className="group font-semibold">
+                  Entrar no app
+                  <ArrowRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                </Button>
+              </Link>
+              <a href="#pilares">
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="border-brand-ink/30 bg-transparent font-semibold text-brand-ink hover:bg-brand-ink/10 hover:text-brand-ink"
+                >
+                  Como funciona
+                </Button>
+              </a>
+            </div>
+          </div>
+
+          <div className="relative animate-in fade-in slide-in-from-bottom-6 duration-1000">
+            <div className="pointer-events-none absolute -inset-6 -z-10 rounded-[2rem] bg-gradient-to-br from-primary/30 via-transparent to-secondary/40 blur-2xl" />
+            <div className="brand-panel overflow-hidden rounded-[1.75rem] border border-brand-ink/15 brand-glass-card">
+              <img
+                src={heroCorretor}
+                alt="Corretora RE/MAX usando o app Plano 60 Dias no celular"
+                width={1024}
+                height={1280}
+                className="h-[26rem] w-full object-cover object-top sm:h-[34rem]"
+              />
+            </div>
+            <div className="absolute bottom-5 left-5 right-5 rounded-2xl border border-brand-ink/15 bg-brand-navy-deep/80 p-4 backdrop-blur-xl">
+              <div className="text-xs uppercase tracking-[0.2em] text-brand-ink-muted">
+                Dia 12 de 35
+              </div>
+              <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-brand-ink/15">
+                <div className="h-full w-[34%] rounded-full bg-primary" />
+              </div>
+              <div className="mt-2 text-sm font-semibold">Rotina do dia concluída</div>
+            </div>
           </div>
         </div>
       </section>
 
       {/* NÚMEROS */}
-      <section className="border-y border-brand-line/40 bg-brand-navy-deep">
-        <div className="mx-auto grid max-w-5xl grid-cols-2 gap-6 px-6 py-10 sm:grid-cols-4">
+      <section className="relative border-y border-brand-line/40 bg-brand-navy-deep">
+        <div className="mx-auto grid max-w-6xl grid-cols-2 gap-8 px-6 py-12 sm:grid-cols-4">
           {NUMEROS.map((n) => (
             <div key={n.rotulo}>
-              <div className="text-3xl font-black text-primary sm:text-4xl">{n.valor}</div>
-              <div className="mt-1 text-xs font-medium uppercase tracking-wide text-brand-ink-muted">
+              <div className="brand-gradient-text text-4xl font-black sm:text-5xl">{n.valor}</div>
+              <div className="mt-2 brand-rule w-10" />
+              <div className="mt-2 text-xs font-medium uppercase tracking-wide text-brand-ink-muted">
                 {n.rotulo}
               </div>
             </div>
@@ -157,30 +210,24 @@ function SobrePage() {
 
       {/* PILARES */}
       <section id="pilares" className="relative isolate overflow-hidden">
-        <div className="pointer-events-none absolute -right-40 -top-40 -z-10 h-[36rem] w-[36rem] rounded-full border-[3px] border-primary/40" />
-        <div className="pointer-events-none absolute -right-52 -top-32 -z-10 h-[36rem] w-[36rem] rounded-full border-[3px] border-secondary/50" />
-        <div className="mx-auto max-w-5xl px-6 py-16">
-          <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">
+        <div className="pointer-events-none absolute -right-40 top-10 h-[30rem] w-[30rem] rounded-full bg-secondary/20 blur-[130px]" />
+        <div className="mx-auto max-w-6xl px-6 py-20">
+          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
             O que o corretor encontra no app
           </h2>
-          <p className="mt-2 max-w-2xl text-sm text-brand-ink-muted sm:text-base">
+          <p className="mt-3 max-w-2xl text-sm text-brand-ink-muted sm:text-base">
             Tudo o que antes estava espalhado em documentos, planilhas e conversas
             soltas, reunido em uma rotina única.
           </p>
-          <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {PILARES.map((p) => (
-              <Card
-                key={p.titulo}
-                className="border-brand-line/50 bg-brand-surface/60 text-brand-ink"
-              >
-                <CardContent className="p-5">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/20 text-primary">
-                    <p.icon className="h-5 w-5" />
-                  </div>
-                  <div className="mt-4 font-semibold">{p.titulo}</div>
-                  <p className="mt-1 text-sm leading-relaxed text-brand-ink-muted">{p.texto}</p>
-                </CardContent>
-              </Card>
+              <div key={p.titulo} className="brand-glass-card rounded-2xl p-6">
+                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary/15 text-primary ring-1 ring-primary/30">
+                  <p.icon className="h-5 w-5" />
+                </div>
+                <div className="mt-5 text-base font-semibold">{p.titulo}</div>
+                <p className="mt-2 text-sm leading-relaxed text-brand-ink-muted">{p.texto}</p>
+              </div>
             ))}
           </div>
         </div>
@@ -188,96 +235,116 @@ function SobrePage() {
 
       {/* JORNADA */}
       <section className="border-y border-brand-line/40 bg-brand-navy-deep">
-        <div className="mx-auto max-w-5xl px-6 py-16">
-          <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">A jornada, semana a semana</h2>
-          <div className="mt-8 grid gap-4 sm:grid-cols-2">
-            {[
-              {
-                s: "Semanas 1–2",
-                t: "Fundamentos",
-                d: "Posicionamento, mercado de relações, cadastro dos primeiros contatos e primeiras abordagens com script.",
-              },
-              {
-                s: "Semanas 3–4",
-                t: "Ação de rua",
-                d: "Cartões, flyers, blocos e captações. Os contadores diários mostram o volume real de esforço.",
-              },
-              {
-                s: "Semanas 5–6",
-                t: "Captação e visitas",
-                d: "Reuniões agendadas, apresentações de proposta e acompanhamento de proprietários e compradores.",
-              },
-              {
-                s: "Semana 7",
-                t: "Consistência",
-                d: "Rotina estabilizada, metas próprias da semana e autoavaliação para consolidar o hábito.",
-              },
-            ].map((b) => (
-              <Card key={b.s} className="border-brand-line/50 bg-brand-surface/60 text-brand-ink">
-                <CardContent className="p-5">
-                  <div className="text-xs font-semibold uppercase tracking-widest text-primary">{b.s}</div>
+        <div className="mx-auto grid max-w-6xl gap-12 px-6 py-20 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
+          <div className="relative">
+            <div className="pointer-events-none absolute -inset-4 -z-10 rounded-3xl bg-gradient-to-tr from-secondary/40 to-primary/25 blur-2xl" />
+            <img
+              src={equipeFoto}
+              alt="Equipe de corretores RE/MAX Única Escolha"
+              loading="lazy"
+              width={1280}
+              height={960}
+              className="brand-panel h-72 w-full rounded-3xl border border-brand-ink/15 object-cover sm:h-96"
+            />
+          </div>
+          <div>
+            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
+              A jornada, semana a semana
+            </h2>
+            <ol className="mt-8 space-y-6 border-l border-brand-line/50 pl-6">
+              {SEMANAS.map((b) => (
+                <li key={b.s} className="relative">
+                  <span className="absolute -left-[1.72rem] top-1.5 h-3 w-3 rounded-full bg-primary ring-4 ring-primary/20" />
+                  <div className="text-xs font-semibold uppercase tracking-widest text-primary">
+                    {b.s}
+                  </div>
                   <div className="mt-1 text-lg font-bold">{b.t}</div>
-                  <p className="mt-2 text-sm leading-relaxed text-brand-ink-muted">{b.d}</p>
-                </CardContent>
-              </Card>
-            ))}
+                  <p className="mt-1 text-sm leading-relaxed text-brand-ink-muted">{b.d}</p>
+                </li>
+              ))}
+            </ol>
           </div>
         </div>
       </section>
 
       {/* GESTOR */}
-      <section className="mx-auto max-w-5xl px-6 py-16">
-        <div className="grid gap-8 sm:grid-cols-2 sm:items-center">
+      <section className="relative isolate overflow-hidden">
+        <div className="pointer-events-none absolute -left-32 top-0 h-[28rem] w-[28rem] rounded-full bg-primary/15 blur-[130px]" />
+        <div className="mx-auto grid max-w-6xl gap-10 px-6 py-20 lg:grid-cols-2 lg:items-center">
           <div>
-            <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">
+            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
               Para o gestor: visibilidade sem cobrança no escuro
             </h2>
-            <p className="mt-3 text-sm leading-relaxed text-brand-ink-muted sm:text-base">
+            <p className="mt-4 text-sm leading-relaxed text-brand-ink-muted sm:text-base">
               Cada relatório diário enviado pelo corretor alimenta o painel do gestor.
               Dá para ver quem está em dia, quem está em risco e onde entrar para
               ajudar — antes da desistência acontecer.
             </p>
-          </div>
-          <div className="space-y-3">
-            {[
-              { icon: Target, t: "Status por cor", d: "Verde, amarelo e vermelho por corretor." },
-              { icon: LineChart, t: "Média da equipe", d: "Percentual de execução consolidado." },
-              { icon: ShieldCheck, t: "Conteúdo editável", d: "Vídeos, guias, scripts e cartilha." },
-            ].map((i) => (
-              <div
-                key={i.t}
-                className="flex items-start gap-3 rounded-lg border border-brand-line/50 bg-brand-surface/60 p-4"
-              >
-                <i.icon className="mt-0.5 h-5 w-5 shrink-0 text-primary" />
-                <div>
-                  <div className="text-sm font-semibold">{i.t}</div>
-                  <div className="text-sm text-brand-ink-muted">{i.d}</div>
+            <div className="mt-8 space-y-3">
+              {GESTOR_ITENS.map((i) => (
+                <div key={i.t} className="brand-glass-card flex items-start gap-3 rounded-xl p-4">
+                  <i.icon className="mt-0.5 h-5 w-5 shrink-0 text-primary" />
+                  <div>
+                    <div className="text-sm font-semibold">{i.t}</div>
+                    <div className="text-sm text-brand-ink-muted">{i.d}</div>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
+          </div>
+          <div className="relative">
+            <div className="pointer-events-none absolute -inset-4 -z-10 rounded-3xl bg-gradient-to-bl from-primary/30 to-secondary/30 blur-2xl" />
+            <img
+              src={gestorFoto}
+              alt="Gestor acompanhando o painel de desempenho dos corretores"
+              loading="lazy"
+              width={1280}
+              height={960}
+              className="brand-panel h-72 w-full rounded-3xl border border-brand-ink/15 object-cover sm:h-[26rem]"
+            />
           </div>
         </div>
       </section>
 
       {/* CTA */}
-      <section className="relative isolate overflow-hidden border-t border-primary/60 bg-brand-navy-deep">
-        <div className="relative mx-auto max-w-5xl px-6 py-16 text-center">
-          <h2 className="text-2xl font-bold text-brand-ink sm:text-3xl">
+      <section className="relative isolate overflow-hidden border-t border-primary/50">
+        <img
+          src={chavesFoto}
+          alt="Corretor entregando as chaves para um casal de clientes"
+          loading="lazy"
+          width={1280}
+          height={720}
+          className="absolute inset-0 h-full w-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-brand-navy-deep via-brand-navy-deep/90 to-brand-navy-deep/60" />
+        <div className="relative mx-auto max-w-6xl px-6 py-24">
+          <h2 className="max-w-xl text-3xl font-bold sm:text-4xl">
             Pronto para começar seus 35 dias?
           </h2>
-          <p className="mx-auto mt-3 max-w-xl text-sm text-brand-ink-muted sm:text-base">
+          <p className="mt-4 max-w-lg text-sm text-brand-ink-muted sm:text-base">
             O acesso é criado pelo seu gestor. Já tem login? É só entrar.
           </p>
-          <Link to="/auth" className="mt-7 inline-block">
-            <Button size="lg" className="font-semibold">
+          <Link to="/auth" className="mt-8 inline-block">
+            <Button size="lg" className="group font-semibold">
               Acessar o Plano 60 Dias
+              <ArrowRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-1" />
             </Button>
           </Link>
         </div>
       </section>
 
-      <footer className="border-t border-brand-line/40 bg-brand-navy py-8 text-center text-xs text-brand-ink-muted">
-        RE/MAX Única Escolha · Plano 60 Dias
+      <footer className="border-t border-brand-line/40 bg-brand-navy py-10">
+        <div className="mx-auto flex max-w-6xl flex-col items-center gap-4 px-6">
+          <img
+            src={bannerAsset.url}
+            alt="RE/MAX Única Escolha"
+            loading="lazy"
+            className="h-14 w-full max-w-md rounded-xl object-cover object-right opacity-80"
+          />
+          <p className="text-xs text-brand-ink-muted">
+            RE/MAX Única Escolha · Plano 60 Dias
+          </p>
+        </div>
       </footer>
     </main>
   );
