@@ -77,11 +77,11 @@ const NUMEROS = [
 
 function SobrePage() {
   return (
-    <main className="min-h-screen bg-background">
+    <main className="min-h-screen bg-brand-navy text-brand-ink">
       {/* BARRA DE TOPO */}
-      <div className="sticky top-0 z-50 border-b border-white/10 bg-secondary/95 backdrop-blur">
+      <div className="sticky top-0 z-50 border-b border-brand-line/50 bg-brand-navy-deep/90 backdrop-blur">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-3">
-          <span className="text-lg font-black tracking-tight text-white">
+          <span className="text-lg font-black tracking-tight text-brand-ink">
             <span className="opacity-80">RE/</span>MAX
             <span className="ml-2 hidden text-xs font-medium opacity-70 sm:inline">
               Plano 60 Dias
@@ -96,21 +96,23 @@ function SobrePage() {
       </div>
 
       {/* HERO */}
-      <section className="relative isolate overflow-hidden">
+      <section className="relative isolate overflow-hidden bg-brand-navy-deep">
+        {/* arte institucional: faixa no topo no mobile, fundo no desktop */}
         <img
-          src={heroAsset.url}
-          alt="Identidade visual RE/MAX Única Escolha"
-          className="absolute inset-0 h-full w-full object-cover"
+          src={bannerAsset.url}
+          alt="RE/MAX Única Escolha"
+          className="h-44 w-full object-cover object-right sm:absolute sm:inset-0 sm:h-full"
         />
-        <div className="absolute inset-0 bg-secondary/80" />
-        <div className="relative mx-auto max-w-5xl px-6 py-24 sm:py-32">
-          <p className="text-xs font-semibold uppercase tracking-[0.35em] text-white/70">
+        <div className="hidden sm:absolute sm:inset-0 sm:block sm:bg-gradient-to-r sm:from-brand-navy-deep sm:via-brand-navy-deep/85 sm:to-transparent" />
+        <div className="relative mx-auto max-w-5xl px-6 pb-16 pt-10 sm:py-32">
+          <p className="text-xs font-semibold uppercase tracking-[0.35em] text-brand-ink-muted">
             RE/MAX Única Escolha
           </p>
-          <h1 className="mt-4 max-w-2xl text-4xl font-black leading-tight tracking-tight text-white sm:text-6xl">
+          <h1 className="mt-4 max-w-2xl text-4xl font-black leading-[0.95] tracking-tight text-brand-ink sm:text-7xl">
             Plano <span className="text-primary">60 Dias</span>
           </h1>
-          <p className="mt-5 max-w-xl text-base leading-relaxed text-white/85 sm:text-lg">
+          <div className="mt-6 h-px w-40 bg-primary" />
+          <p className="mt-6 max-w-lg text-base leading-relaxed text-brand-ink-muted sm:text-lg">
             Os primeiros 35 dias úteis definem a carreira de um corretor. Aqui eles
             deixam de ser um caderno de tarefas e viram uma jornada de execução no
             celular — com acompanhamento do gestor em tempo real.
@@ -125,7 +127,7 @@ function SobrePage() {
               <Button
                 size="lg"
                 variant="outline"
-                className="border-white/40 bg-transparent font-semibold text-white hover:bg-white/10 hover:text-white"
+                className="border-brand-ink/40 bg-transparent font-semibold text-brand-ink hover:bg-brand-ink/10 hover:text-brand-ink"
               >
                 Como funciona
               </Button>
@@ -135,12 +137,12 @@ function SobrePage() {
       </section>
 
       {/* NÚMEROS */}
-      <section className="border-b bg-card">
+      <section className="border-y border-brand-line/40 bg-brand-navy-deep">
         <div className="mx-auto grid max-w-5xl grid-cols-2 gap-6 px-6 py-10 sm:grid-cols-4">
           {NUMEROS.map((n) => (
             <div key={n.rotulo}>
               <div className="text-3xl font-black text-primary sm:text-4xl">{n.valor}</div>
-              <div className="mt-1 text-xs font-medium uppercase tracking-wide text-muted-foreground">
+              <div className="mt-1 text-xs font-medium uppercase tracking-wide text-brand-ink-muted">
                 {n.rotulo}
               </div>
             </div>
@@ -149,31 +151,38 @@ function SobrePage() {
       </section>
 
       {/* PILARES */}
-      <section id="pilares" className="mx-auto max-w-5xl px-6 py-16">
-        <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">
-          O que o corretor encontra no app
-        </h2>
-        <p className="mt-2 max-w-2xl text-sm text-muted-foreground sm:text-base">
-          Tudo o que antes estava espalhado em documentos, planilhas e conversas
-          soltas, reunido em uma rotina única.
-        </p>
-        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {PILARES.map((p) => (
-            <Card key={p.titulo} className="border-border/70">
-              <CardContent className="p-5">
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                  <p.icon className="h-5 w-5" />
-                </div>
-                <div className="mt-4 font-semibold">{p.titulo}</div>
-                <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{p.texto}</p>
-              </CardContent>
-            </Card>
-          ))}
+      <section id="pilares" className="relative isolate overflow-hidden">
+        <div className="pointer-events-none absolute -right-40 -top-40 -z-10 h-[36rem] w-[36rem] rounded-full border-[3px] border-primary/40" />
+        <div className="pointer-events-none absolute -right-52 -top-32 -z-10 h-[36rem] w-[36rem] rounded-full border-[3px] border-secondary/50" />
+        <div className="mx-auto max-w-5xl px-6 py-16">
+          <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">
+            O que o corretor encontra no app
+          </h2>
+          <p className="mt-2 max-w-2xl text-sm text-brand-ink-muted sm:text-base">
+            Tudo o que antes estava espalhado em documentos, planilhas e conversas
+            soltas, reunido em uma rotina única.
+          </p>
+          <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {PILARES.map((p) => (
+              <Card
+                key={p.titulo}
+                className="border-brand-line/50 bg-brand-surface/60 text-brand-ink"
+              >
+                <CardContent className="p-5">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/20 text-primary">
+                    <p.icon className="h-5 w-5" />
+                  </div>
+                  <div className="mt-4 font-semibold">{p.titulo}</div>
+                  <p className="mt-1 text-sm leading-relaxed text-brand-ink-muted">{p.texto}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
         </div>
       </section>
 
       {/* JORNADA */}
-      <section className="bg-muted">
+      <section className="border-y border-brand-line/40 bg-brand-navy-deep">
         <div className="mx-auto max-w-5xl px-6 py-16">
           <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">A jornada, semana a semana</h2>
           <div className="mt-8 grid gap-4 sm:grid-cols-2">
@@ -199,11 +208,11 @@ function SobrePage() {
                 d: "Rotina estabilizada, metas próprias da semana e autoavaliação para consolidar o hábito.",
               },
             ].map((b) => (
-              <Card key={b.s}>
+              <Card key={b.s} className="border-brand-line/50 bg-brand-surface/60 text-brand-ink">
                 <CardContent className="p-5">
                   <div className="text-xs font-semibold uppercase tracking-widest text-primary">{b.s}</div>
                   <div className="mt-1 text-lg font-bold">{b.t}</div>
-                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{b.d}</p>
+                  <p className="mt-2 text-sm leading-relaxed text-brand-ink-muted">{b.d}</p>
                 </CardContent>
               </Card>
             ))}
@@ -218,7 +227,7 @@ function SobrePage() {
             <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">
               Para o gestor: visibilidade sem cobrança no escuro
             </h2>
-            <p className="mt-3 text-sm leading-relaxed text-muted-foreground sm:text-base">
+            <p className="mt-3 text-sm leading-relaxed text-brand-ink-muted sm:text-base">
               Cada relatório diário enviado pelo corretor alimenta o painel do gestor.
               Dá para ver quem está em dia, quem está em risco e onde entrar para
               ajudar — antes da desistência acontecer.
@@ -230,11 +239,14 @@ function SobrePage() {
               { icon: LineChart, t: "Média da equipe", d: "Percentual de execução consolidado." },
               { icon: ShieldCheck, t: "Conteúdo editável", d: "Vídeos, guias, scripts e cartilha." },
             ].map((i) => (
-              <div key={i.t} className="flex items-start gap-3 rounded-lg border bg-card p-4">
+              <div
+                key={i.t}
+                className="flex items-start gap-3 rounded-lg border border-brand-line/50 bg-brand-surface/60 p-4"
+              >
                 <i.icon className="mt-0.5 h-5 w-5 shrink-0 text-primary" />
                 <div>
                   <div className="text-sm font-semibold">{i.t}</div>
-                  <div className="text-sm text-muted-foreground">{i.d}</div>
+                  <div className="text-sm text-brand-ink-muted">{i.d}</div>
                 </div>
               </div>
             ))}
@@ -243,12 +255,12 @@ function SobrePage() {
       </section>
 
       {/* CTA */}
-      <section className="bg-secondary">
-        <div className="mx-auto max-w-5xl px-6 py-16 text-center">
-          <h2 className="text-2xl font-bold text-white sm:text-3xl">
+      <section className="relative isolate overflow-hidden border-t border-primary/60 bg-brand-navy-deep">
+        <div className="relative mx-auto max-w-5xl px-6 py-16 text-center">
+          <h2 className="text-2xl font-bold text-brand-ink sm:text-3xl">
             Pronto para começar seus 35 dias?
           </h2>
-          <p className="mx-auto mt-3 max-w-xl text-sm text-white/80 sm:text-base">
+          <p className="mx-auto mt-3 max-w-xl text-sm text-brand-ink-muted sm:text-base">
             O acesso é criado pelo seu gestor. Já tem login? É só entrar.
           </p>
           <Link to="/auth" className="mt-7 inline-block">
@@ -259,7 +271,7 @@ function SobrePage() {
         </div>
       </section>
 
-      <footer className="border-t bg-card py-8 text-center text-xs text-muted-foreground">
+      <footer className="border-t border-brand-line/40 bg-brand-navy py-8 text-center text-xs text-brand-ink-muted">
         RE/MAX Única Escolha · Plano 60 Dias
       </footer>
     </main>
