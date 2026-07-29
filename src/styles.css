@@ -65,6 +65,7 @@
   --color-brand-line: var(--brand-line);
   --color-brand-ink: var(--brand-ink);
   --color-brand-ink-muted: var(--brand-ink-muted);
+  --color-brand-glass: var(--brand-glass);
 }
 
 :root {
@@ -77,6 +78,10 @@
   --brand-line: oklch(0.38 0.08 264);
   --brand-ink: oklch(0.99 0 0);
   --brand-ink-muted: oklch(0.82 0.02 264);
+  --brand-glass: oklch(0.3 0.07 264 / 0.45);
+  --gradient-brand: linear-gradient(120deg, oklch(0.99 0 0), oklch(0.72 0.2 25));
+  --shadow-glow: 0 0 0 1px oklch(0.58 0.22 25 / 0.25), 0 24px 60px -24px oklch(0.58 0.22 25 / 0.55);
+  --shadow-panel: 0 30px 80px -40px oklch(0 0 0 / 0.9);
   --background: oklch(0.98 0.003 250);
   --foreground: oklch(0.2 0.02 260);
   --card: oklch(1 0 0);
@@ -155,4 +160,48 @@
     background-color: var(--color-background);
     color: var(--color-foreground);
   }
+}
+
+@utility brand-grid {
+  background-image:
+    linear-gradient(to right, oklch(1 0 0 / 0.045) 1px, transparent 1px),
+    linear-gradient(to bottom, oklch(1 0 0 / 0.045) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse 90% 70% at 50% 0%, #000 40%, transparent 100%);
+}
+
+@utility brand-glass-card {
+  background-color: var(--brand-glass);
+  backdrop-filter: blur(14px) saturate(140%);
+  border: 1px solid oklch(1 0 0 / 0.1);
+  transition:
+    border-color 200ms ease,
+    transform 200ms ease,
+    box-shadow 200ms ease;
+
+  &:hover {
+    border-color: oklch(0.58 0.22 25 / 0.55);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-glow);
+  }
+}
+
+@utility brand-gradient-text {
+  background-image: var(--gradient-brand);
+  background-clip: text;
+  color: transparent;
+}
+
+@utility brand-rule {
+  height: 1px;
+  background-image: linear-gradient(
+    to right,
+    transparent,
+    oklch(0.58 0.22 25 / 0.9),
+    transparent
+  );
+}
+
+@utility brand-panel {
+  box-shadow: var(--shadow-panel);
 }
