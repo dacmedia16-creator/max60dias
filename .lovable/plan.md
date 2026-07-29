@@ -1,33 +1,24 @@
 ## Objetivo
 
-Repaginar a página inicial (`src/routes/index.tsx`) com um visual mais futurista e atraente, com fotos de pessoas (corretores/equipe) geradas por IA, mantendo a identidade RE/MAX Única Escolha (azul-marinho, vermelho, arte do banner).
+Colocar o logo **RE/MAX Imóveis Única Escolha** (arquivo enviado) sobre a foto selecionada — a foto da equipe, na seção "A jornada, semana a semana" em `src/routes/index.tsx` (linha 241).
 
-## Imagens (geradas por IA)
+## O que muda
 
-Quatro imagens novas em `src/assets/`, em estilo fotográfico realista, iluminação azul/vermelha sutil combinando com a marca:
+1. **Logo publicado como asset**
+   - O PNG enviado vira um asset de CDN (`src/assets/remax-logo.png.asset.json`) via `lovable-assets`, sem deixar o binário no repositório.
 
-1. **Hero** — corretor(a) jovem sorrindo, celular na mão, ambiente urbano moderno com fachadas de vidro (usada como imagem principal ao lado do texto).
-2. **Equipe** — grupo de 3–4 corretores em pé, ambiente de escritório contemporâneo (seção "A jornada").
-3. **Gestor** — pessoa analisando um painel/dashboard em tela grande (seção do gestor).
-4. **CTA** — corretor entregando chaves / apertando a mão de um cliente (faixa final antes do CTA).
+2. **Logo aplicado sobre a foto da equipe**
+   - A foto ganha um contêiner com o logo sobreposto, no canto inferior esquerdo da imagem.
+   - Como o logo é azul-marinho sobre fundo transparente/branco, ele fica dentro de uma "plaquinha" clara com cantos arredondados e leve desfoque de fundo (mesma linguagem de vidro já usada na página), garantindo contraste e legibilidade sobre a foto escura.
+   - Um degradê sutil escurecendo a base da foto reforça a leitura do logo.
 
-## Visual futurista (nível 3 — moderno, sem exagero de neon)
-
-- Fundo azul-marinho profundo com **grid sutil** e **halos de luz** vermelho/azul (radial gradients em CSS).
-- Hero em duas colunas: à esquerda o título "Plano 60 Dias" com um leve efeito de brilho no vermelho; à direita a foto do corretor dentro de uma moldura de vidro (glass card com borda luminosa e cantos marcados).
-- Cards dos pilares com **glassmorphism leve**: fundo translúcido, borda fina que acende em hover, ícone dentro de um badge com brilho.
-- Números (35 / 280+ / 14 / 100%) em tipografia grande com gradiente vermelho→claro e linha luminosa embaixo.
-- Timeline vertical/horizontal das semanas com nós que brilham, em vez de 4 cards soltos.
-- Transições suaves de entrada por seção (fade + subida leve) e hover discreto nos cards.
-- Divisores em linha vermelha fina com esmaecimento nas pontas.
-
-## Estrutura da página (mantida, repaginada)
-
-Barra fixa com "Entrar" → Hero com foto → Números → Pilares (6 cards glass) → Jornada em timeline com foto da equipe → Seção do gestor com foto do painel → Faixa CTA com foto → Rodapé.
+3. **Responsivo**
+   - No celular o logo aparece menor e proporcional, mantendo margem segura em relação às bordas da imagem.
 
 ## Detalhes técnicos
 
-- Novos tokens em `src/styles.css`: superfície de vidro, borda luminosa, sombras/halos e gradiente de destaque — sem cores hardcoded nos componentes.
-- Animações via CSS/Tailwind (`tw-animate-css` já instalado); sem novas dependências.
-- Imagens geradas em `src/assets/` e importadas diretamente; a arte original do banner continua sendo usada na barra de topo/rodapé.
-- Alterações restritas a `src/routes/index.tsx`, `src/styles.css` e novos assets. Nada de banco de dados, rotas autenticadas ou lógica de negócio.
+- Alteração isolada em `src/routes/index.tsx`: a `<img>` da equipe passa a ficar dentro de um wrapper `relative`, com o logo em `absolute` e `alt` descritivo.
+- Nenhuma cor hardcoded — usa os tokens/utilitários de marca já existentes em `src/styles.css`.
+- Nenhuma mudança em rotas autenticadas, banco ou lógica de negócio.
+
+Se preferir o logo em outro ponto (centralizado, canto superior direito, ou como marca-d'água grande e translúcida ao fundo da foto), é só dizer que eu ajusto antes de implementar.
