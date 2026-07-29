@@ -1,24 +1,23 @@
 ## Objetivo
 
-Adicionar orientação inicial para o corretor: tela de **boas-vindas no 1º acesso** (4 passos) + aba **Ajuda** sempre acessível pelo ícone (?) no cabeçalho. Conteúdo compartilhado em um arquivo único. Só para corretor — gestor não vê.
+Tornar a fanpage (hoje em `/sobre`) a **página inicial** do site, em `/`. Hoje `/` é apenas um redirecionador: manda para `/auth`, `/hoje` ou `/gestor`.
 
 ## Passos
 
-1. **Migration** — adicionar coluna `onboarding_ok BOOLEAN NOT NULL DEFAULT false` em `public.profiles`. Corretores existentes verão as boas-vindas na próxima entrada (comportamento desejado).
+1. **Mover a fanpage para `/`** — o conteúdo de `src/routes/sobre.tsx` passa para `src/routes/index.tsx`, com SSR ativo (bom para SEO e compartilhamento) e o `head()` de metadados que já existe.
 
-2. **Backend** — criar `src/lib/onboarding.functions.ts` com `marcarOnboardingVisto` (atualiza `profiles.onboarding_ok = true` para o usuário logado).
+2. **Remover o redirecionamento automático de `/`** — visitantes e usuários logados passam a ver a fanpage ao abrir o site. O botão "Entrar no app" leva ao login, que continua encaminhando cada pessoa para a tela certa (corretor ou gestor).
 
-3. **Conteúdo compartilhado** — criar `src/lib/ajuda-conteudo.ts` exportando `PASSOS_AJUDA` (4 passos: Hoje, Contatos, Scripts, Cartilha/Jornada).
+3. **Manter `/sobre` funcionando** — a rota antiga passa a redirecionar para `/`, para que links já compartilhados não quebrem.
 
-4. **Componente boas-vindas** — criar `src/components/BoasVindas.tsx`: modal (Dialog) com carrossel dos 4 passos, botões "Pular" e "Próximo/Começar!", que ao concluir chama `marcarOnboardingVisto` e invalida o cache `["meus"]`.
+4. **Link de acesso rápido no topo da fanpage** — botão "Entrar" fixo no cabeçalho da página, além do CTA que já existe no final.
 
-5. **Rota Ajuda** — criar `src/routes/_authenticated/ajuda.tsx` (`/ajuda`) exibindo os mesmos 4 passos em cards, com link para voltar à Hoje.
+## Detalhes técnicos
 
-6. **Cabeçalho** — atualizar `src/components/AppHeader.tsx` para incluir o ícone `HelpCircle` linkando para `/ajuda` (apenas quando `gestor=false`). Manter `BottomNav` com as 5 abas atuais (Hoje, Contatos, Scripts, Cartilha, Jornada).
+- `src/routes/index.tsx`: substituir o `beforeLoad` de redirecionamento pelo componente da fanpage; remover `ssr: false`.
+- `src/routes/sobre.tsx`: reduzir a `beforeLoad: () => { throw redirect({ to: "/" }) }`.
+- Nenhuma alteração no banco de dados, RLS ou server functions.
 
-7. **Integração na Hoje** — em `src/routes/_authenticated/hoje.tsx`, importar `BoasVindas` e renderizar `<BoasVindas open={meusQ.data?.profile?.onboarding_ok === false} />` logo dentro da div raiz. `getMeusDados` já faz `select("*")` em profiles, então `onboarding_ok` já virá no payload sem alterar server function.
+## Ponto de atenção
 
-## Fora de escopo
-
-- Nenhuma alteração em RLS/GRANTs de `profiles` (a policy de UPDATE do próprio registro já existe).
-- Nenhuma mudança no menu do gestor ou em outras telas.
+Quem já está logado e abrir o site vai cair na fanpage, não direto no `/hoje`. Se preferir que usuários logados continuem indo direto para o app, dá para manter esse redirecionamento só para sessão ativa — é só avisar.
