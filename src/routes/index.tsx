@@ -1,6 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import bannerAsset from "@/assets/remax-banner.png.asset.json";
-import logoAsset from "@/assets/remax-logo.png.asset.json";
 import heroCorretor from "@/assets/hero-corretor.jpg";
 import equipeFoto from "@/assets/equipe.jpg";
 import gestorFoto from "@/assets/gestor.jpg";
@@ -239,25 +238,14 @@ function SobrePage() {
         <div className="mx-auto grid max-w-6xl gap-12 px-6 py-20 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
           <div className="relative">
             <div className="pointer-events-none absolute -inset-4 -z-10 rounded-3xl bg-gradient-to-tr from-secondary/40 to-primary/25 blur-2xl" />
-            <div className="brand-panel relative overflow-hidden rounded-3xl border border-brand-ink/15">
-              <img
-                src={equipeFoto}
-                alt="Equipe de corretores RE/MAX Única Escolha"
-                loading="lazy"
-                width={1280}
-                height={960}
-                className="h-72 w-full object-cover sm:h-96"
-              />
-              <div className="pointer-events-none absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-brand-navy-deep/85 to-transparent" />
-              <div className="absolute bottom-4 left-4 rounded-xl border border-brand-ink/25 bg-brand-ink/90 px-4 py-3 backdrop-blur-md sm:bottom-5 sm:left-5">
-                <img
-                  src={logoAsset.url}
-                  alt="RE/MAX Imóveis Única Escolha"
-                  loading="lazy"
-                  className="h-8 w-auto sm:h-10"
-                />
-              </div>
-            </div>
+            <img
+              src={equipeFoto}
+              alt="Equipe de corretores RE/MAX Única Escolha no escritório"
+              loading="lazy"
+              width={1280}
+              height={960}
+              className="brand-panel h-72 w-full rounded-3xl border border-brand-ink/15 object-cover sm:h-96"
+            />
           </div>
           <div>
             <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
