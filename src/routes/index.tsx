@@ -1,6 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import bannerAsset from "@/assets/remax-banner.png.asset.json";
-import logoAsset from "@/assets/remax-logo.png.asset.json";
 import heroCorretor from "@/assets/hero-corretor.jpg";
 import equipeFoto from "@/assets/equipe.jpg";
 import gestorFoto from "@/assets/gestor.jpg";
