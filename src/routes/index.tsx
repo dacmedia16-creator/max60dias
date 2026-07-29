@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import bannerAsset from "@/assets/remax-banner.png.asset.json";
-import remaxLogoAsset from "@/assets/remax-logo.png.asset.json";
+import remaxLogoUeAsset from "@/assets/remax-logo-ue-01.png.asset.json";
 import heroCorretor from "@/assets/hero-corretor.jpg";
 import equipeFoto from "@/assets/equipe.jpg";
 import gestorFoto from "@/assets/gestor.jpg";
@@ -118,7 +118,7 @@ function SobrePage() {
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-3">
           <div className="rounded-lg bg-brand-ink p-2 shadow-lg shadow-black/20">
             <img
-              src={remaxLogoAsset.url}
+              src={remaxLogoUeAsset.url}
               alt="RE/MAX Única Escolha"
               className="h-10 w-auto object-contain sm:h-12"
             />
